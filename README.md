@@ -5,6 +5,7 @@ A collection of Python projects with runnable code and project documentation.
 | Project | Description |
 | --- | --- |
 | [01 · Number Guesser](01-number-guesser-game/) | A tested CLI game with three difficulty levels, persistent statistics, and local leaderboards. |
+| [02 · Rock Paper Scissors](02-rock-paper-scissors/) | A Python game with an animated browser interface, best-of matches, and SQLite history. |
 
 ## Run Number Guesser
 

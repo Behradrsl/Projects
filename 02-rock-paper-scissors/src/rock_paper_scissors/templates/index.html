@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="A fresh take on an old-school game. Play Rock Paper Scissors against the computer, one good guess at a time.">
+    <meta name="theme-color" content="#f6f5f0">
+    <title>Rock Paper Scissors · A game of instinct</title>
+    <link rel="icon"
+          href="{{ url_for('static', filename='favicon.svg') }}"
+          type="image/svg+xml">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <svg class="svg-library"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-hidden="true">
+      <defs>
+      <symbol id="hand-rock" viewBox="0 0 100 100">
+      <path d="M28 82 24 69Q16 63 16 53V39Q16 32 23 32Q30 32 30 39V45H32V34Q32 27 39 27Q46 27 46 34V43H48V33Q48 26 55 26Q62 26 62 33V45H64L65 36Q66 30 72 31Q79 32 78 39L76 53Q83 50 86 56Q89 62 83 68L71 79 69 84Z" />
+      <path d="M76 53 52 50Q43 49 42 56Q41 63 50 64H65M30 45V49M46 43V48M62 45V50M28 73 72 76" class="detail" />
+      </symbol>
+      <symbol id="hand-paper" viewBox="0 0 100 100">
+      <path d="M36 86 28 71 16 53Q12 47 17 43Q22 40 26 45L33 54 30 21Q29 14 35 14Q41 14 42 21L44 44 44 14Q44 7 50 7Q56 7 56 14V43L60 18Q61 12 67 13Q73 14 72 21L68 47 74 29Q76 23 81 25Q86 27 84 33L77 62Q75 73 68 82L67 86Z" />
+      <path d="M36 76H70M44 58Q52 52 60 56M42 21 44 44M56 20V43M70 30 68 47" class="detail" />
+      </symbol>
+      <symbol id="hand-scissors" viewBox="0 0 100 100">
+      <path d="M32 85 27 72Q20 65 22 55L24 47Q26 41 32 43L39 47 29 20Q27 14 33 11Q39 9 42 16L52 40 62 12Q64 6 70 8Q76 10 74 17L64 47Q73 44 77 51L79 62Q80 71 70 80L68 85Z" />
+      <path d="M39 47 46 52Q50 56 47 61Q43 66 37 62L28 57M64 47 56 53Q52 57 56 62M32 76H72" class="detail" />
+      </symbol>
+      <symbol id="arrow" viewBox="0 0 24 24">
+      <path d="M5 12h14m-6-6 6 6-6 6" />
+      </symbol>
+      <symbol id="refresh" viewBox="0 0 24 24">
+      <path d="M20 7v5h-5M4 17v-5h5M6 7a7 7 0 0 1 12-1l2 3M4 15l2 3a7 7 0 0 0 12-1" />
+      </symbol>
+      <symbol id="spark" viewBox="0 0 24 24">
+      <path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z" />
+      </symbol>
+      </defs>
+    </svg>
+    <a class="skip-link" href="#main">Skip to game</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Rock Paper Scissors home">
+        <span class="brand-mark">rps<span>✳</span></span>
+        <span class="brand-copy">THE CLASSICS,
+          <br>
+        REPLAYED.</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <button class="nav-link active" id="play-tab" aria-current="page">Play</button>
+        <button class="nav-link" id="history-tab">History</button>
+        <button class="rules-link" id="open-rules">How to play <span aria-hidden="true">↗</span></button>
+      </nav>
+      <span class="header-note"><span class="status-dot"></span> You vs. the computer</span>
+    </header>
+    <main id="main">
+      <section id="play-view" aria-labelledby="page-heading">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">A GAME OF INSTINCT</p>
+            <h1 id="page-heading">Your move<span>.</span></h1>
+            <p class="intro">Three choices. Endless rematches. Trust your gut.</p>
+          </div>
+          <div class="edition">
+            <span>01 / THE ORIGINAL THREE</span>
+            <div class="tiny-hands" aria-hidden="true">
+              <svg>
+                <use href="#hand-rock" />
+              </svg><svg>
+                <use href="#hand-paper" />
+              </svg><svg>
+                <use href="#hand-scissors" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="game-layout">
+          <div class="game-column">
+            <section class="arena" aria-label="Current match">
+              <div class="arena-top"><span class="live-label"><span class="status-dot"></span><span id="match-label">BEST OF 3</span></span><span id="round-number">ROUND 01</span></div>
+              <div class="scoreboard">
+                <div class="competitor"><span class="avatar human" aria-hidden="true">☺</span><span id="player-label">You</span><span class="competitor-hint">A little instinct</span></div>
+                <div class="score">
+                  <span id="player-score">0</span><span class="score-separator">:</span><span id="computer-score">0</span>
+                  <p id="target-label">FIRST TO 2 WINS</p>
+                </div>
+                <div class="competitor"><span class="avatar bot" aria-hidden="true">▦</span><span>Computer</span><span class="competitor-hint">A little randomness</span></div>
+              </div>
+              <div class="battlefield" id="battlefield">
+                <div class="hand-stage player-stage">
+                  <svg class="hand-icon" id="player-hand" aria-label="Your move">
+                    <use href="#hand-rock" />
+                  </svg><span id="player-move-label">YOUR PICK</span>
+                </div>
+                <span class="versus">vs</span>
+                <div class="hand-stage computer-stage">
+                  <svg class="hand-icon" id="computer-hand" aria-label="Computer's move">
+                    <use href="#hand-rock" />
+                  </svg><span id="computer-move-label">THEIR PICK</span>
+                </div>
+              </div>
+              <div class="round-result"
+                   role="status"
+                   aria-live="polite"
+                   aria-atomic="true">
+                <h2 id="result-title">Ready when you are.</h2>
+                <p id="result-description">Pick your move below. Let's see what happens.</p>
+              </div>
+              <div class="arena-bottom"><span id="draw-count">0 draws</span><span id="match-note">Draws don't count toward the win.</span></div>
+            </section>
+            <section class="move-picker" aria-label="Choose your move">
+              <div class="section-caption">
+                <h2>MAKE YOUR PICK</h2>
+                <span>or use your keyboard <kbd>R</kbd> <kbd>P</kbd> <kbd>S</kbd></span>
+              </div>
+              <div class="move-grid">
+                <button class="move-card" data-move="rock" disabled>
+                  <svg class="hand-icon" aria-hidden="true">
+                    <use href="#hand-rock" />
+                  </svg><span>Rock</span><span class="move-description">The solid choice.</span><kbd>R</kbd>
+                </button>
+                <button class="move-card" data-move="paper" disabled>
+                  <svg class="hand-icon" aria-hidden="true">
+                    <use href="#hand-paper" />
+                  </svg><span>Paper</span><span class="move-description">Quietly powerful.</span><kbd>P</kbd>
+                </button>
+                <button class="move-card" data-move="scissors" disabled>
+                  <svg class="hand-icon" aria-hidden="true">
+                    <use href="#hand-scissors" />
+                  </svg><span>Scissors</span><span class="move-description">A sharp instinct.</span><kbd>S</kbd>
+                </button>
+              </div>
+            </section>
+          </div>
+          <aside class="sidebar" aria-label="Match settings and history">
+            <section class="settings-card">
+              <div class="card-heading">
+                <h2>Make it a match.</h2>
+                <svg class="line-icon" aria-hidden="true">
+                  <use href="#spark" />
+                </svg>
+              </div>
+              <p>A quick round or a longer rivalry?</p>
+              <fieldset class="format-field">
+                <legend>Match format</legend>
+                <div class="format-buttons">
+                  <button data-format="3" class="selected" aria-pressed="true">Best of 3</button><button data-format="5" aria-pressed="false">Best of 5</button><button data-format="7" aria-pressed="false">Best of 7</button><button data-format="free" aria-pressed="false">Free play</button>
+                </div>
+              </fieldset>
+              <label class="input-label" for="player-name">Your name <span>optional</span></label>
+              <input id="player-name"
+                     type="text"
+                     maxlength="24"
+                     placeholder="Guest"
+                     autocomplete="nickname">
+              <p class="field-note">Used on your next match. Saved on this device.</p>
+              <button class="primary-button" id="new-match" disabled>
+                New match
+                <svg class="line-icon" aria-hidden="true">
+                  <use href="#refresh" />
+                </svg>
+              </button>
+              <button class="text-button" id="end-match" disabled>End this match</button>
+            </section>
+            <section class="rounds-card">
+              <div class="card-heading">
+                <h2>The play-by-play</h2>
+                <span class="count-badge" id="round-count">0</span>
+              </div>
+              <div id="round-history">
+                <div class="empty-rounds">
+                  <span aria-hidden="true">↗</span>
+                  <p>A clean slate.</p>
+                  <span>Your rounds will show up here.</span>
+                </div>
+              </div>
+            </section>
+            <section class="rules-card">
+              <p class="eyebrow">THE CIRCLE OF LIFE (SORT OF)</p>
+              <div class="rule-row"><span>Rock</span><span>crushes</span><span>Scissors</span></div>
+              <div class="rule-row"><span>Scissors</span><span>cuts</span><span>Paper</span></div>
+              <div class="rule-row"><span>Paper</span><span>covers</span><span>Rock</span></div>
+              <p>Same pick? Call it a draw and go again.</p>
+            </section>
+          </aside>
+        </div>
+      </section>
+      <section id="history-view" hidden aria-labelledby="history-heading">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">A LITTLE FRIENDLY RIVALRY</p>
+            <h1 id="history-heading">The track record<span>.</span></h1>
+            <p class="intro">Good runs, close calls, and reasons for a rematch.</p>
+          </div>
+          <button class="secondary-button" id="back-to-play">Back to the game <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="stats-grid">
+          <article><span>Completed matches</span><strong id="stat-matches">—</strong></article><article><span>Matches won</span><strong id="stat-wins">—</strong></article><article><span>Match win rate</span><strong id="stat-rate">—</strong></article><article><span>Rounds played</span><strong id="stat-rounds">—</strong></article>
+        </div>
+        <div class="history-card">
+          <div class="card-heading">
+            <h2>Recent sessions</h2>
+            <span class="muted">Latest 50 · All players on this device</span>
+          </div>
+          <div id="saved-history"></div>
+        </div>
+        <p class="history-footnote">Match win rate includes completed best-of matches. Free play and unfinished matches are listed separately and excluded from the rate.</p>
+      </section>
+      <div id="notice" class="notice" role="alert" hidden></div>
+    </main>
+    <footer>
+      <span>Old-school game. Fresh start.</span><span>Built with Python. Played with instinct. <span class="footer-flower"
+       aria-hidden="true">✳</span></span>
+    </footer>
+    <dialog id="rules-dialog" aria-labelledby="rules-title">
+      <button class="dialog-close" id="close-rules" aria-label="Close rules">×</button>
+      <p class="eyebrow">THE 30-SECOND VERSION</p>
+      <h2 id="rules-title">Keep it simple.</h2>
+      <p>Pick rock, paper, or scissors. The computer commits to a random move before you choose. Neither of you gets a peek.</p>
+      <ul>
+        <li><strong>Rock</strong> crushes scissors.</li>
+        <li><strong>Scissors</strong> cuts paper.</li>
+        <li><strong>Paper</strong> covers rock.</li>
+      </ul>
+      <p>Best of 3 means first to 2 wins. Best of 5 needs 3; best of 7 needs 4. Draws don't advance the score, so a match can take more rounds than its name suggests.</p>
+      <p>In free play, keep going as long as you like. Use <strong>End this match</strong> to save the session. Ending a best-of match early records it as unfinished.</p>
+      <p class="dialog-note">Use R, P, or S to play with your keyboard. History stays in your local Python server's database. Closing the tab leaves the current match available until the server restarts or it expires after 24 hours of inactivity.</p>
+      <button class="primary-button" id="got-it">Got it. Let's play.</button>
+    </dialog>
+    <noscript>
+      <p class="notice">This interface needs JavaScript. Enable it and reload to play.</p>
+    </noscript>
+  </body>
+</html>
