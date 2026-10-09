@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="#101117">
+    <meta name="theme-color" content="#2558df">
     <title>RPS — Make your move</title>
     <link rel="icon"
           href="{{ url_for('static', filename='favicon.svg') }}"
@@ -16,30 +16,43 @@
     <svg class="svg-library"
          aria-hidden="true"
          xmlns="http://www.w3.org/2000/svg">
-      <defs><symbol id="hand-rock" viewBox="0 0 24 24">
-      <path d="M8 11v-3.5a1.5 1.5 0 0 1 3 0v2.5" />
-      <path d="M11 9.5v-3a1.5 1.5 0 0 1 3 0v3.5" />
-      <path d="M14 7.5a1.5 1.5 0 0 1 3 0v2.5" />
-      <path d="M17 9.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7l-.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" />
-      </symbol>
-      <symbol id="hand-paper" viewBox="0 0 24 24">
-      <path d="M8 13v-7.5a1.5 1.5 0 0 1 3 0v6.5" />
-      <path d="M11 5.5v-2a1.5 1.5 0 1 1 3 0v8.5" />
-      <path d="M14 5.5a1.5 1.5 0 0 1 3 0v6.5" />
-      <path d="M17 7.5a1.5 1.5 0 0 1 3 0v8.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7a69.74 69.74 0 0 1 -.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" />
-      </symbol>
-      <symbol id="hand-scissors" viewBox="0 0 24 24">
-      <path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v7.5" />
-      <path d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7a69.74 69.74 0 0 1 -.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" />
-      <path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5" />
-      <path d="M11 5.5v-2a1.5 1.5 0 1 1 3 0v8.5" />
-      </symbol>
+      <defs>
+        <symbol id="hand-rock" viewBox="0 0 120 140">
+          <g fill="#ffce59" stroke="#152952" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M65 102 C66 120 60 130 42 131" fill="none" stroke-width="14" />
+            <path d="M29 43 Q26 63 29 77 Q32 91 46 96 L45 103 Q61 111 79 103 L79 95 Q96 86 96 66 L93 43 Z" />
+            <path d="M28 50 L26 32 Q25 20 35 19 Q45 18 46 30 L47 48 Q48 60 39 61 Q29 62 28 50 Z" />
+            <path d="M45 46 L43 28 Q42 15 53 14 Q64 13 65 27 L65 45 Q65 57 56 58 Q46 59 45 46 Z" />
+            <path d="M64 45 L63 28 Q62 16 73 17 Q83 18 83 30 L83 48 Q82 59 73 58 Q64 57 64 45 Z" />
+            <path d="M82 50 L81 36 Q80 25 89 27 Q98 29 97 40 L97 54 Q96 64 88 63 Q82 62 82 50 Z" />
+            <path d="M30 63 Q19 59 19 69 Q19 80 35 84 L51 88 Q63 90 66 81 Q69 72 58 69 L43 65 Z" />
+            <path d="M49 98 Q61 101 72 97" fill="none" />
+          </g>
+        </symbol>
+        <symbol id="hand-paper" viewBox="0 0 120 140">
+          <g stroke="#152952" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M66 104 C68 122 63 131 43 131" fill="none" stroke-width="15" />
+            <path d="M45 96 C35 89 31 81 23 76 L11 69 Q2 63 7 55 Q11 48 21 53 L35 60 L29 26 Q27 15 35 13 Q44 10 47 23 L53 49 L51 15 Q50 4 60 4 Q70 4 70 16 L71 47 L77 20 Q79 10 88 13 Q96 16 93 28 L88 54 L95 35 Q100 25 107 30 Q114 35 109 45 L101 68 Q98 87 83 98 L81 106 Q65 114 48 106 Z" fill="#7dcdf3" />
+            <path d="M37 63 Q52 63 55 78 M50 99 Q65 103 77 98" fill="none" />
+            <path d="M36 23 L41 43 M60 14 L61 37 M85 23 L80 43" fill="none" stroke="#d3f2ff" stroke-width="5" />
+          </g>
+        </symbol>
+        <symbol id="hand-scissors" viewBox="0 0 120 140">
+          <g fill="#ff957f" stroke="#152952" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M65 104 L65 132" fill="none" stroke-width="14" />
+            <path d="M36 66 L27 24 Q24 11 34 9 Q44 7 47 20 L55 54 L64 19 Q67 6 77 9 Q87 12 83 26 L75 56 Q91 52 97 66 Q104 82 89 95 L81 100 L81 106 Q65 113 48 106 L48 98 Q29 90 31 75 Z" />
+            <path d="M77 63 Q79 54 88 57 Q97 60 95 70 L93 79 Q91 86 84 84 Q76 82 77 75 Z" />
+            <path d="M59 62 Q59 53 68 53 Q77 54 77 63 L76 76 Q75 84 67 83 Q59 82 59 74 Z" />
+            <path d="M34 69 Q23 61 22 72 Q20 81 31 86 L44 91 Q54 94 57 86 Q60 78 50 74 Z" />
+            <path d="M53 100 Q65 103 75 99" fill="none" />
+          </g>
+        </symbol>
       </defs>
     </svg>
     <a class="skip-link" href="#main">Skip to game</a>
     <div class="game-shell" id="play-view">
       <header class="site-header">
-        <a class="brand" href="/" aria-label="Rock Paper Scissors home"><span class="brand-icon">✳</span> RPS<span class="brand-sub">ROCK PAPER SCISSORS</span></a>
+        <a class="brand" href="/" aria-label="Rock Paper Scissors home"><span class="brand-icon">✳</span> RPS<span class="brand-sub">Rock paper scissors</span></a>
         <nav aria-label="Game options">
           <button id="history-tab"
                   class="icon-button"
@@ -135,14 +148,14 @@
         <div id="notice" class="notice" role="alert" hidden></div>
       </main>
       <footer>
-        <span id="draw-count">0 draws</span><span class="keyboard-hint">PICK A MOVE <kbd>R</kbd><kbd>P</kbd><kbd>S</kbd></span><span id="match-label">BEST OF 3</span>
+        <span id="draw-count">0 draws</span><span class="keyboard-hint">Play with your keyboard <kbd>R</kbd><kbd>P</kbd><kbd>S</kbd></span><span id="match-label">BEST OF 3</span>
       </footer>
     </div>
     <dialog id="settings-dialog" aria-labelledby="settings-title">
       <button class="dialog-close"
               data-close="settings-dialog"
               aria-label="Close settings">×</button>
-      <p class="eyebrow">YOUR GAME</p>
+      <p class="eyebrow">Settings</p>
       <h2 id="settings-title">Make it yours.</h2>
       <label for="player-name">Player name</label><input id="player-name"
        type="text"
@@ -156,7 +169,7 @@
       <button class="dialog-close"
               data-close="history-view"
               aria-label="Close history">×</button>
-      <p class="eyebrow">THE SCOREBOOK</p>
+      <p class="eyebrow">History</p>
       <h2 id="history-heading">Your track record.</h2>
       <div class="stats-grid">
         <article><span>Matches</span><strong id="stat-matches">—</strong></article><article><span>Wins</span><strong id="stat-wins">—</strong></article><article><span>Win rate</span><strong id="stat-rate">—</strong></article><article><span>Rounds</span><strong id="stat-rounds">—</strong></article>
@@ -171,7 +184,7 @@
     </dialog>
     <dialog id="rules-dialog" aria-labelledby="rules-title">
       <button class="dialog-close" id="close-rules" aria-label="Close rules">×</button>
-      <p class="eyebrow">THE CLASSIC RULES</p>
+      <p class="eyebrow">How to play</p>
       <h2 id="rules-title">Three moves. One winner.</h2>
       <div class="rule-list">
         <p>Rock <span>beats</span> scissors.</p>

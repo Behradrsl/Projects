@@ -105,8 +105,8 @@ function renderRounds() {
     const empty = makeElement("div", "empty-rounds");
     const arrow = makeElement("span", "", "↗");
     arrow.setAttribute("aria-hidden", "true");
-    empty.append(arrow, makeElement("p", "", "A clean slate."), makeElement("span", "",
-      "Your rounds will show up here."));
+    empty.append(arrow, makeElement("p", "", "No rounds yet."), makeElement("span", "",
+      "Pick a move to start playing."));
     $("#round-history").replaceChildren(empty);
     return;
   }
@@ -136,8 +136,8 @@ function renderMatch() {
   $("#computer-score").textContent = match.losses;
   $("#draw-count").textContent = `${match.draws} ${match.draws === 1 ? "draw" : "draws"}`;
   $("#match-label").textContent = match.best_of ? `BEST OF ${match.best_of}` : "FREE PLAY";
-  $("#target-label").textContent = match.target ? `FIRST TO ${match.target} WINS` :
-    "NO FINISH LINE";
+  $("#target-label").textContent = match.target ? `First to ${match.target} wins` :
+    "Play at your own pace";
   $("#round-number").textContent = match.finished ? "SESSION ENDED" :
     `ROUND ${String(match.rounds.length + 1).padStart(2, "0")}`;
   $("#match-note").textContent = match.best_of ? "Draws don't count toward the win." :

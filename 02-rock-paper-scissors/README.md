@@ -1,102 +1,126 @@
 # Rock Paper Scissors
 
-**Three choices. A little luck. A reason for one more match.**
+A browser-based Rock Paper Scissors game built with Python and Flask. Play against the computer, choose a match format, and keep a local history of your results.
 
-A Python game with a minimal, single-screen browser interface, animated reveals, and a local match history. Pick a best-of format or settle into free play. The computer commits to its move before you make yours, and Python keeps the score.
+The interface uses plain HTML, CSS, and JavaScript. Python handles the rules, computer moves, scores, and SQLite storage. No Node.js or frontend build step is required.
 
 ![Rock Paper Scissors desktop interface](docs/desktop.png)
 
 <details>
-<summary>See the mobile layout</summary>
+<summary>Mobile preview</summary>
 
-<img src="docs/mobile.png" width="320" alt="The game on a narrow mobile screen, with all three moves and the scoreboard visible on one screen">
+<img src="docs/mobile.png" width="320" alt="Rock Paper Scissors on a mobile screen">
 
 </details>
 
-## Run it
+## Requirements
 
-You'll need **Python 3.10 or newer** and a modern browser. No Node.js, frontend build step, or external account is needed.
+- Python 3.10 or newer
+- A modern browser with JavaScript enabled
 
-From the Projects repository:
+## Installation and launch
+
+Open a terminal in this project folder, `02-rock-paper-scissors`, where `main.py` and `pyproject.toml` are located.
+
+### macOS / Linux
 
 ```bash
-cd 02-rock-paper-scissors
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 python main.py
 ```
 
-The game opens at **http://127.0.0.1:8000**. Leave the terminal running while you play; press `Ctrl+C` when you're done.
-
-On Windows PowerShell:
+### Windows PowerShell
 
 ```powershell
-cd 02-rock-paper-scissors
 py -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 python main.py
 ```
 
-Once installed, `rps` and `python -m rock_paper_scissors` also launch the interface. If port 8000 is occupied, use `rps --port 8080`. Use `--no-browser` to start the server without opening a tab, or `--database ./data/history.sqlite3` to choose where history is saved.
+The launcher starts the local server and opens **http://127.0.0.1:8000** in your browser. Keep the terminal running while you play. Press `Ctrl+C` in the terminal to stop the server.
 
-## What's in the game
+Installing `requirements.txt` installs this project in editable mode and its Flask dependency. After installation, you can also launch it with either command:
 
-- **Best of 3, 5, or 7:** first to 2, 3, or 4 wins. Draws don't advance the target.
-- **Free play:** keep playing until you choose to finish the session.
-- **Animated reveals:** both choices appear together, with a short explanation of the result.
-- **Live scoreboard and round log:** see the score, win indicators, and draw count; the current round log is available in History.
-- **Saved history:** completed and unfinished sessions, plus match wins and win rate.
-- **Keyboard play:** press `R`, `P`, or `S`; shortcuts pause while typing a name or using a dialog.
-- **Responsive layout:** move cards remain usable on small screens; reduced-motion preferences disable the animation.
-
-Rock crushes scissors. Scissors cuts paper. Paper covers rock. The same move is a draw. Best-of matches can take more rounds than their name suggests because draws are replayed.
-
-Changing format or starting over during a played match asks before replacing it. An unfinished best-of match is recorded as unfinished; ending free play saves its current score. Empty sessions are discarded.
-
-## Why it's structured this way
-
-The course exercise introduces classes and random choices. This version extends those ideas into a small application with a distinct game engine, HTTP layer, database, and interface.
-
-```text
-Browser (HTML, CSS, JavaScript)
-              │ JSON requests
-              ▼
-         Flask routes
-          /        \
-    Match engine   SQLite history
+```bash
+rps
+python -m rock_paper_scissors
 ```
 
-**The engine owns the rules.** `Match` tracks rounds and closes a best-of match when either side reaches the target. Typed moves and immutable round results keep the rule code small. It has no Flask, database, or browser dependencies, so all nine possible matchups can be tested directly.
+### Launch options
 
-**The server owns the score.** The browser submits a move, a match ID, and the revision it last saw. It cannot submit its own score or choose the computer's move. The computer's next move is selected with `secrets.choice` when a match starts, then immediately after each accepted round. A lock and revision checks prevent duplicate or stale requests from playing an extra round.
+| Option | Purpose | Default |
+| --- | --- | --- |
+| `--port PORT` | Choose a port from 1 to 65535 | `8000` |
+| `--no-browser` | Start without opening a browser tab | Browser opens |
+| `--database PATH` | Choose the SQLite history file | `~/.rps-studio/history.sqlite3` |
+| `--version` | Print the installed app version and exit | — |
 
-**SQLite stores summaries.** Each finished session has a unique ID; saving the same session twice does not duplicate it. Transactions protect database updates. Unknown database versions and unrelated databases are rejected, while a storage error leaves gameplay usable and displays a warning.
+For example:
 
-**The interface stays lightweight.** Plain HTML, CSS, and JavaScript handle rendering and interaction. Move icons use the consistent Tabler SVG set, fonts are system fonts, and assets are served locally. Settings, rules, and saved history open in dialogs to keep the arena in focus. Player-provided text is inserted with `textContent`. Keyboard focus, live result announcements, a native rules dialog, and reduced-motion support are part of the interface.
+```bash
+python main.py --port 8080 --no-browser --database ./data/history.sqlite3
+```
 
-## Project layout
+Then open **http://127.0.0.1:8080** yourself. The same options work with `rps` and `python -m rock_paper_scissors`.
+
+## How to play
+
+A new browser session automatically starts a best-of-three match.
+
+1. Choose **Best of 3**, **Best of 5**, **Best of 7**, or **Free play**.
+2. Click a move, or press `R` for rock, `P` for paper, or `S` for scissors.
+3. Watch the reveal and score update. Use **Play again** after a match ends.
+
+Rock beats scissors, paper beats rock, and scissors beats paper. Identical moves are a draw.
+
+| Format | Finish condition |
+| --- | --- |
+| Best of 3 | First to 2 wins |
+| Best of 5 | First to 3 wins |
+| Best of 7 | First to 4 wins |
+| Free play | Continue until you choose **Finish & save session** |
+
+Draws count as played rounds but do not advance the win target, so a best-of match can exceed its named number of rounds.
+
+Use **Settings** to enter a player name of up to 24 characters and start a new match. The browser remembers the name for later visits. Keyboard move shortcuts pause while a dialog is open or you are typing in an input.
+
+Use **History** to see saved results, statistics, and the latest five rounds of the current match. **How to play** opens the rules. The interface supports small screens, keyboard navigation, and reduced-motion preferences.
+
+## Saving and restoring games
+
+- Completed best-of matches save automatically.
+- **End this match** ends a best-of match early and records it as unfinished.
+- **Finish & save session** ends free play and saves its score as a win, loss, or tie.
+- Starting a new match or changing formats ends the previous active session. If rounds have been played, the interface asks for confirmation first.
+- Sessions with no played rounds are not saved.
+
+History stores match summaries, rather than individual rounds. It shows the latest 50 saved sessions, with statistics calculated across all saved sessions. Match wins and win rate include only completed best-of matches; free play and unfinished matches are excluded. The rounds total includes all saved sessions.
+
+The default database is `~/.rps-studio/history.sqlite3`. Its parent folder is created when needed. History is shared by all players using the same database; player names are labels, not accounts.
+
+Refreshing the page restores the current match while the server is running. Active matches are held in memory and expire after 24 hours of inactivity. Closing a tab does not end or save an active match. Restarting the server clears active matches and browser sessions but preserves saved history.
+
+## Project structure
 
 ```text
 02-rock-paper-scissors/
-├── main.py
-├── pyproject.toml
-├── requirements.txt
-├── docs/
-│   ├── desktop.png
-│   └── mobile.png
+├── README.md
+├── main.py                       # Launch from a checkout
+├── pyproject.toml                # Package metadata and dependencies
+├── requirements.txt             # Editable installation of this project
+├── LICENSE-TABLER.txt            # Icon license
+├── docs/                        # README screenshots
 ├── src/rock_paper_scissors/
 │   ├── __init__.py
-│   ├── __main__.py      # Local server and launch options
-│   ├── game.py          # Moves, results, and match lifecycle
-│   ├── storage.py       # SQLite transactions and schema version
-│   ├── web.py           # Flask routes and browser sessions
-│   ├── templates/index.html
-│   └── static/
-│       ├── app.js
-│       ├── styles.css
-│       └── favicon.svg
+│   ├── __main__.py               # Command-line options and local server
+│   ├── game.py                   # Moves, round outcomes, and match rules
+│   ├── storage.py                # SQLite match summaries
+│   ├── web.py                    # Flask routes and session state
+│   ├── templates/index.html      # Browser interface
+│   └── static/                   # JavaScript, CSS, and favicon
 └── tests/
     ├── test_game.py
     ├── test_storage.py
@@ -104,50 +128,54 @@ Browser (HTML, CSS, JavaScript)
     └── browser_checks.py
 ```
 
-CI lives in the repository root at [`.github/workflows/rock-paper-scissors.yml`](../.github/workflows/rock-paper-scissors.yml).
+The game engine has no Flask or database dependency. The server selects the computer's next move before the player submits theirs and checks match IDs and revisions to reject stale turns. SQLite saves each finished session under a unique ID to prevent duplicate records.
 
-## History and sessions
+The launcher listens on `127.0.0.1` for local use. Active matches and session secrets live in one server process; a public deployment would require changes to server and session configuration.
 
-Saved summaries live at `~/.rps-studio/history.sqlite3`, independent of the directory used to launch the game. The History dialog shows the latest 50 sessions and totals across the whole database. It includes all player names on this local server. Names are labels, not authenticated accounts.
+## Development and checks
 
-Match win rate counts completed best-of matches. Free-play sessions and unfinished matches appear in history but are excluded from that rate. Dates are stored in UTC and displayed in the browser's local time.
-
-A browser refresh restores its current match while the server is running. In-progress rounds are kept in memory and expire after 24 hours of inactivity. Closing a tab does not finish or save a match; use **End this match** to save it before leaving. Restarting the server resets current matches and browser sessions, but keeps saved history.
-
-The launcher binds to localhost and is intended for local play and portfolio demos. A public deployment would need a production server, persistent session storage, a stable secret, HTTPS configuration, and a decision about user accounts and shared history. Multiple server workers are not supported by the in-memory match store.
-
-## Tests
-
-Install the development tools:
+With your virtual environment active, install the development dependencies:
 
 ```bash
 python -m pip install -e ".[dev]"
+```
+
+Run the Python tests, lint, and formatting checks from this project folder:
+
+```bash
 python -m unittest discover -s tests -v
 ruff check .
 ruff format --check .
 ```
 
-The 32 Python tests cover the full outcome matrix, all match targets, draw handling, free play, persistence, duplicate saves, corrupt and incompatible databases, session isolation, input validation, CSRF protection, trusted hosts, stale requests, and storage failures.
+The Python tests cover game rules, match formats, persistence, request validation, session isolation, and error handling.
 
-Five additional browser checks exercise the real interface:
+To run the browser checks:
 
 ```bash
 python -m playwright install chromium
 python tests/browser_checks.py
 ```
 
-They cover a complete match and replay, history, format-change confirmation, free play, keyboard input, the rules dialog, refresh recovery, mobile overflow, reduced motion, and safe rendering of player names. If you already have Chrome installed, set `RPS_BROWSER_CHANNEL=chrome` to use it. Set `RPS_CAPTURE=1` to refresh the README screenshots during those checks.
+These checks cover gameplay, replay, history, format-change confirmation, keyboard input, refresh recovery, mobile layout, reduced motion, and player-name rendering.
 
-GitHub Actions runs the Python suite on Python 3.10–3.13, plus lint, formatting, and Chromium interface checks.
+Optional environment variables for browser checks:
 
-## A quick demo
+| Variable | Purpose |
+| --- | --- |
+| `RPS_BROWSER_CHANNEL=chrome` | Use an installed Chrome browser instead of Playwright's Chromium |
+| `RPS_CAPTURE=1` | Update `docs/desktop.png` and `docs/mobile.png` while running the checks |
 
-Start a best-of-three match, play a couple of rounds, and open History. Then switch to free play and try the keyboard shortcuts. That short walkthrough shows the interface, server-managed score, session lifecycle, and persistence without needing a setup explanation.
+## Troubleshooting
 
-## Course reference
+- **Port 8000 is busy:** launch with `python main.py --port 8080`.
+- **The browser did not open:** open the address printed in the terminal.
+- **The page cannot reach the game:** check that the Python server is running, then refresh.
+- **History cannot load or save:** check that the database path is writable and points to this app's database. Use `--database` to select a new file if necessary.
+- **The package cannot be imported:** activate the virtual environment and run `python -m pip install -r requirements.txt` from this project folder.
 
-Inspired by Pytopia's [Rock Paper Scissors project brief](https://github.com/pytopia/Project-Based-Python/tree/59b349e0423d8260ce77e4fc752dd8c111ed3349/Lectures/06%20Level%20I/01%20Rock%20Paper%20Scissors). The browser interface, match formats, persistence, API, packaging, and automated checks were developed for this portfolio version.
+## Credits
 
-## Icons
+Based on the Pytopia Project-Based Python Rock Paper Scissors exercise.
 
-Hand icons are from [Tabler Icons](https://github.com/tabler/tabler-icons), by Paweł Kuna, under the MIT license. See [LICENSE-TABLER.txt](LICENSE-TABLER.txt).
+The colored cartoon hand illustrations are custom SVG artwork based on the supplied visual reference. The project also retains the earlier Tabler icon license in [LICENSE-TABLER.txt](LICENSE-TABLER.txt).
