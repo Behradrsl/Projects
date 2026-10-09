@@ -156,13 +156,3 @@ ruff format --check .
 ```
 
 From the projects repository root, enter `01-number-guesser-game/` before running the commands above. The project's GitHub Actions workflow lives at `.github/workflows/number-guesser.yml` in the repository root. It runs tests on Python 3.10–3.13 and checks lint and formatting when this project changes.
-
-## Portfolio presentation
-
-A concise project description:
-
-> Built an installable Python CLI game with a separate domain engine, three difficulty profiles, persistent statistics, validated atomic JSON storage, and automated tests for gameplay and failure handling.
-
-For a demo, show a round with an invalid guess, a higher/lower hint, a win, and the saved statistics. The code provides concrete examples for discussing separation of concerns, state transitions, deterministic tests, and storage reliability.
-
-Potential future extensions include a daily challenge, an accessible graphical interface reusing the engine, or SQLite storage for concurrent sessions.
