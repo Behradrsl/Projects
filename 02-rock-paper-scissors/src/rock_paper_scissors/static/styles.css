@@ -61,6 +61,8 @@ a {
 .svg-library,
 .sr-only {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 1px;
   height: 1px;
   overflow: hidden;
@@ -799,7 +801,7 @@ td time {
   line-height: 1.6;
 }
 
-@media (min-height: 900px) {
+@media (min-height: 1000px) {
   main {
     padding-top: 35px;
     padding-bottom: 50px;
@@ -1018,9 +1020,17 @@ td time {
   }
 }
 
-@media (max-height: 740px) and (min-width: 641px) {
+@media (max-height: 960px) and (min-width: 641px) {
   .site-header {
-    height: 75px;
+    height: 64px;
+  }
+
+  main {
+    padding: 8px 0 15px;
+  }
+
+  footer {
+    height: 44px;
   }
 
   .format-buttons {
@@ -1044,6 +1054,7 @@ td time {
 
   .round-result {
     margin: 25px 0 18px;
+    min-height: 66px;
   }
 
   .move-card {
@@ -1058,6 +1069,119 @@ td time {
 
   .match-controls {
     margin-top: 20px;
+  }
+}
+
+@media (max-height: 760px) and (max-width: 640px) {
+  .site-header {
+    height: 64px;
+  }
+
+  main {
+    padding-bottom: 18px;
+  }
+
+  .format-buttons {
+    margin-bottom: 20px;
+  }
+
+  .score>span {
+    font-size: 40px;
+  }
+
+  .battlefield {
+    padding-top: 24px;
+  }
+
+  .hand-stage {
+    width: 112px;
+    height: 112px;
+  }
+
+  .hand-stage .hand-icon {
+    width: 62px;
+    height: 62px;
+  }
+
+  .round-result {
+    margin: 24px 0 16px;
+    min-height: 62px;
+  }
+
+  .move-card {
+    padding: 18px 10px 14px;
+  }
+
+  .move-card .hand-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .match-controls {
+    margin-top: 18px;
+  }
+
+  footer {
+    height: 44px;
+  }
+}
+
+@media (max-height: 620px) and (max-width: 640px) {
+  .site-header {
+    height: 52px;
+  }
+
+  main {
+    padding: 6px 0 10px;
+  }
+
+  .format-buttons {
+    margin-bottom: 14px;
+  }
+
+  .score>span {
+    font-size: 34px;
+  }
+
+  .battlefield {
+    padding: 18px 0 16px;
+  }
+
+  .hand-stage {
+    width: 96px;
+    height: 96px;
+  }
+
+  .hand-stage .hand-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .round-result {
+    margin: 18px 0 12px;
+    min-height: 56px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .move-card {
+    padding: 14px 8px 12px;
+    gap: 8px;
+  }
+
+  .move-card .hand-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .match-controls {
+    margin-top: 12px;
+  }
+
+  footer {
+    height: 36px;
   }
 }
 

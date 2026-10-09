@@ -63,7 +63,15 @@ class BrowserChecks(unittest.TestCase):
         self.page.locator(f'[data-move="{move}"]').click()
         expect(self.page.locator(".arena")).to_have_attribute("aria-busy", "false")
 
+    def assert_single_screen(self, width, height):
+        self.page.set_viewport_size({"width": width, "height": height})
+        self.assertLessEqual(self.page.evaluate("document.documentElement.scrollWidth"), width)
+        self.assertLessEqual(self.page.evaluate("document.documentElement.scrollHeight"), height)
+
     def test_desktop_match_history_and_replay(self):
+        for width, height in [(1440, 900), (1280, 720), (1366, 768)]:
+            with self.subTest(viewport=(width, height)):
+                self.assert_single_screen(width, height)
         if os.environ.get("RPS_CAPTURE"):
             path = Path(__file__).resolve().parents[1] / "docs" / "desktop.png"
             path.parent.mkdir(exist_ok=True)
@@ -118,21 +126,18 @@ class BrowserChecks(unittest.TestCase):
         expect(self.page.locator("#player-score")).to_have_text("0")
 
     def test_mobile_layout_play_and_history(self):
-        self.page.set_viewport_size({"width": 390, "height": 844})
+        for width, height in [(375, 667), (360, 740), (320, 568), (390, 844)]:
+            with self.subTest(viewport=(width, height)):
+                self.assert_single_screen(width, height)
         self.page.reload()
         expect(self.page.locator('[data-move="rock"]')).to_be_enabled()
-        self.assertLessEqual(self.page.evaluate("document.documentElement.scrollWidth"), 390)
-        self.assertLessEqual(
-            self.page.locator('[data-move="rock"]').bounding_box()["y"]
-            + self.page.locator('[data-move="rock"]').bounding_box()["height"],
-            844,
-        )
         if os.environ.get("RPS_CAPTURE"):
             path = Path(__file__).resolve().parents[1] / "docs" / "mobile.png"
             path.parent.mkdir(exist_ok=True)
             self.page.screenshot(path=path, full_page=True, animations="disabled")
         self.pick("paper")
         expect(self.page.locator("#computer-score")).to_have_text("1")
+        self.assert_single_screen(390, 844)
         self.page.get_by_role("button", name="History", exact=True).click()
         expect(self.page.get_by_text("Every rivalry starts somewhere.")).to_be_visible()
         self.assertLessEqual(self.page.evaluate("document.documentElement.scrollWidth"), 390)
