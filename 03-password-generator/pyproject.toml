@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "portfolio-password-generator"
+version = "1.0.0"
+description = "A simple CLI password generator based on the Pytopia Python course."
+requires-python = ">=3.10"
+readme = "README.md"
+dependencies = ["nltk>=3.9.1,<4"]
+
+[project.optional-dependencies]
+dev = ["ruff==0.11.13"]
+
+[project.scripts]
+password-generator = "password_generator.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
