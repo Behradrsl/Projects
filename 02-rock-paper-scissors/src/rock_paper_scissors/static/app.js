@@ -15,12 +15,14 @@ function rememberName(value) {
   try {
     localStorage.setItem("rps-player", value);
   } catch {
-    /* Storage is optional. */ }
+    /* Storage is optional. */
+  }
 }
 try {
   $("#player-name").value = localStorage.getItem("rps-player") || "";
 } catch {
-  /* Private mode. */ }
+  /* Private mode. */
+}
 $("#player-name").addEventListener("input", (event) => rememberName(event.target.value));
 
 function notify(message = "") {
@@ -54,7 +56,8 @@ async function api(path, payload) {
       signal: AbortSignal.timeout(12000),
     });
   } catch {
-    throw new Error("Couldn't reach the game. Check that the Python server is running, then refresh.");
+    throw new Error(
+      "Couldn't reach the game. Check that the Python server is running, then refresh.");
   }
   let data;
   try {
@@ -102,14 +105,19 @@ function renderRounds() {
     const empty = makeElement("div", "empty-rounds");
     const arrow = makeElement("span", "", "↗");
     arrow.setAttribute("aria-hidden", "true");
-    empty.append(arrow, makeElement("p", "", "A clean slate."), makeElement("span", "", "Your rounds will show up here."));
+    empty.append(arrow, makeElement("p", "", "A clean slate."), makeElement("span", "",
+      "Your rounds will show up here."));
     $("#round-history").replaceChildren(empty);
     return;
   }
   const rows = [...match.rounds].reverse().slice(0, 5).map((round) => {
     const row = makeElement("div", "round-row");
     const picks = makeElement("div", "round-picks");
-    picks.append(smallHand(round.player), makeElement("span", "", "vs"), smallHand(round.computer));
+    picks.append(
+      smallHand(round.player),
+      makeElement("span", "", "vs"),
+      smallHand(round.computer)
+    );
     row.append(makeElement("span", "round-index", String(round.number).padStart(2, "0")), picks,
       makeElement("span", `round-outcome ${round.outcome}`, {
         win: "WIN",
@@ -128,20 +136,26 @@ function renderMatch() {
   $("#computer-score").textContent = match.losses;
   $("#draw-count").textContent = `${match.draws} ${match.draws === 1 ? "draw" : "draws"}`;
   $("#match-label").textContent = match.best_of ? `BEST OF ${match.best_of}` : "FREE PLAY";
-  $("#target-label").textContent = match.target ? `FIRST TO ${match.target} WINS` : "NO FINISH LINE";
-  $("#round-number").textContent = match.finished ? "SESSION ENDED" : `ROUND ${String(match.rounds.length + 1).padStart(2, "0")}`;
-  $("#match-note").textContent = match.best_of ? "Draws don't count toward the win." : "End the session whenever you're ready.";
+  $("#target-label").textContent = match.target ? `FIRST TO ${match.target} WINS` :
+    "NO FINISH LINE";
+  $("#round-number").textContent = match.finished ? "SESSION ENDED" :
+    `ROUND ${String(match.rounds.length + 1).padStart(2, "0")}`;
+  $("#match-note").textContent = match.best_of ? "Draws don't count toward the win." :
+    "End the session whenever you're ready.";
   $("#end-match").textContent = match.best_of ? "End this match" : "Finish & save session";
   selectedFormat = match.best_of;
   formatButtons.forEach((button) => {
-    const selected = (button.dataset.format === "free" ? null : Number(button.dataset.format)) === selectedFormat;
+    const format = button.dataset.format === "free" ? null : Number(button.dataset.format);
+    const selected = format === selectedFormat;
     button.classList.toggle("selected", selected);
     button.setAttribute("aria-pressed", String(selected));
   });
   const round = match.rounds.at(-1);
   const arena = $(".arena");
   arena.classList.remove("won", "lost", "drawn");
-  moveButtons.forEach((button) => button.classList.toggle("chosen", button.dataset.move === round?.player));
+  moveButtons.forEach((button) => {
+    button.classList.toggle("chosen", button.dataset.move === round?.player);
+  });
   if (round) {
     hand("#player-hand", round.player);
     hand("#computer-hand", round.computer);
@@ -163,8 +177,8 @@ function renderMatch() {
     hand("#computer-hand", "rock");
     $("#player-move-label").textContent = "YOUR PICK";
     $("#computer-move-label").textContent = "THEIR PICK";
-    $("#result-title").textContent = "Ready when you are.";
-    $("#result-description").textContent = "Pick your move below. Let's see what happens.";
+    $("#result-title").textContent = "Make your move.";
+    $("#result-description").textContent = "Rock, paper, or scissors. What's it going to be?";
   }
   if (match.finished) {
     $("#result-title").textContent = {
@@ -173,21 +187,33 @@ function renderMatch() {
       draw: "Evenly matched.",
       abandoned: "We'll call it here."
     } [match.outcome];
-    $("#result-description").textContent = match.outcome === "abandoned" ? "Saved as unfinished. A fresh start is one click away." : `${match.wins}–${match.losses}. ${match.best_of ? "Up for a rematch?" : "A good place to stop. Until next time."}`;
+    $("#result-description").textContent = match.outcome === "abandoned" ?
+      "Saved as unfinished. A fresh start is one click away." :
+      `${match.wins}–${match.losses}. ${match.best_of ? "Up for a rematch?" : "A good place to stop. Until next time."}`;
     $("#new-match").firstChild.textContent = "Play again ";
     if (!match.rounds.length) {
       $("#result-title").textContent = "A clean slate.";
-      $("#result-description").textContent = "No rounds played, nothing saved. Start a new match when you're ready.";
+      $("#result-description").textContent =
+        "No rounds played, nothing saved. Start a new match when you're ready.";
     }
   } else {
     $("#new-match").firstChild.textContent = "New match ";
+  }
+  for (const [selector, score] of [
+    ["#player-pips", match.wins],
+    ["#computer-pips", match.losses]
+  ]) {
+    $(selector).replaceChildren(...Array.from({
+      length: match.target || 0
+    }, (_, index) => makeElement("span", index < score ? "filled" : "")));
   }
   renderRounds();
 }
 
 function canReplace() {
   if (!match || match.finished || !match.rounds.length) return true;
-  return window.confirm(match.best_of ? "Start fresh? This match will be saved as unfinished." : "Start fresh? Your current free-play session will be saved.");
+  return window.confirm(match.best_of ? "Start fresh? This match will be saved as unfinished." :
+    "Start fresh? Your current free-play session will be saved.");
 }
 
 async function startMatch(format = selectedFormat) {
@@ -243,7 +269,8 @@ async function play(move) {
 
 async function endMatch() {
   if (busy || !match || match.finished) return;
-  if (match.best_of && match.rounds.length && !window.confirm("End this match? It will be recorded as unfinished.")) return;
+  if (match.best_of && match.rounds.length && !window.confirm(
+      "End this match? It will be recorded as unfinished.")) return;
   notify();
   setBusy(true);
   try {
@@ -262,18 +289,12 @@ async function endMatch() {
 }
 
 function showView(history) {
-  $("#play-view").hidden = history;
-  $("#history-view").hidden = !history;
-  $("#play-tab").classList.toggle("active", !history);
-  $("#history-tab").classList.toggle("active", history);
   if (history) {
-    $("#history-tab").setAttribute("aria-current", "page");
-    $("#play-tab").removeAttribute("aria-current");
+    $("#history-view").showModal();
+    loadHistory();
   } else {
-    $("#play-tab").setAttribute("aria-current", "page");
-    $("#history-tab").removeAttribute("aria-current");
+    $("#history-view").close();
   }
-  if (history) loadHistory();
 }
 
 function renderSavedHistory(data) {
@@ -284,13 +305,15 @@ function renderSavedHistory(data) {
   $("#stat-rounds").textContent = stats.rounds;
   if (!data.records.length) {
     const empty = makeElement("div", "history-empty");
-    empty.append(makeElement("h3", "", "Every rivalry starts somewhere."), makeElement("p", "", "Finish your first match and it will appear here.\nYour history stays on this device."));
+    empty.append(makeElement("h3", "", "Every rivalry starts somewhere."), makeElement("p", "",
+      "Finish your first match and it will appear here.\nYour history stays on this device."));
     $("#saved-history").replaceChildren(empty);
     return;
   }
   const scroll = makeElement("div", "table-scroll");
   const table = makeElement("table");
-  const caption = makeElement("caption", "sr-only", "Finished and unfinished sessions, most recent first");
+  const caption = makeElement("caption", "sr-only",
+    "Finished and unfinished sessions, most recent first");
   const head = makeElement("thead"),
     heading = makeElement("tr");
   ["Player", "Format", "Score", "Result", "Played"].forEach((label) => {
@@ -302,7 +325,9 @@ function renderSavedHistory(data) {
   const body = makeElement("tbody");
   data.records.forEach((record) => {
     const row = makeElement("tr");
-    row.append(makeElement("td", "", record.player), makeElement("td", "", record.best_of ? `Best of ${record.best_of}` : "Free play"), makeElement("td", "", `${record.wins}–${record.losses} · ${record.draws} draws`));
+    row.append(makeElement("td", "", record.player), makeElement("td", "", record.best_of ?
+      `Best of ${record.best_of}` : "Free play"), makeElement("td", "",
+      `${record.wins}–${record.losses} · ${record.draws} draws`));
     const result = makeElement("td");
     result.append(makeElement("span", `round-outcome ${record.outcome}`, {
       win: "WON",
@@ -338,22 +363,31 @@ async function loadHistory() {
     lastHistory = await api("/api/history");
     renderSavedHistory(lastHistory);
   } catch (error) {
-    $("#saved-history").replaceChildren(makeElement("p", "history-empty", "History couldn't load. Return to the game, or try this tab again."));
+    $("#saved-history").replaceChildren(makeElement("p", "history-empty",
+      "History couldn't load. Return to the game, or try this tab again."));
     notify(error.message);
   }
 }
 
 moveButtons.forEach((button) => button.addEventListener("click", () => play(button.dataset.move)));
-formatButtons.forEach((button) => button.addEventListener("click", () => startMatch(button.dataset.format === "free" ? null : Number(button.dataset.format))));
+formatButtons.forEach((button) => button.addEventListener("click", () => {
+  startMatch(button.dataset.format === "free" ? null : Number(button.dataset.format));
+}));
 $("#new-match").addEventListener("click", () => startMatch());
 $("#end-match").addEventListener("click", endMatch);
-$("#play-tab").addEventListener("click", () => showView(false));
+
 $("#history-tab").addEventListener("click", () => showView(true));
 $("#back-to-play").addEventListener("click", () => showView(false));
 $("#open-rules").addEventListener("click", () => $("#rules-dialog").showModal());
-[$("#close-rules"), $("#got-it")].forEach((button) => button.addEventListener("click", () => $("#rules-dialog").close()));
+[$("#close-rules"), $("#got-it")].forEach((button) => {
+  button.addEventListener("click", () => $("#rules-dialog").close());
+});
 document.addEventListener("keydown", (event) => {
-  if (event.repeat || event.ctrlKey || event.altKey || event.metaKey || $("#rules-dialog").open || $("#play-view").hidden || ["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+  if (
+    event.repeat || event.ctrlKey || event.altKey || event.metaKey ||
+    document.querySelector("dialog[open]") ||
+    ["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)
+  ) return;
   const move = {
     r: "rock",
     p: "paper",
@@ -385,3 +419,11 @@ async function initialize() {
   }
 }
 initialize();
+
+$("#open-settings").addEventListener("click", () => $("#settings-dialog").showModal());
+$("#apply-settings").addEventListener("click", async () => {
+  await startMatch();
+  $("#settings-dialog").close();
+});
+document.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () =>
+  document.getElementById(button.dataset.close).close()));

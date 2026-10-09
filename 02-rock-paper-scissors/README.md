@@ -2,14 +2,14 @@
 
 **Three choices. A little luck. A reason for one more match.**
 
-A Python game with a responsive browser interface, animated reveals, and a local match history. Pick a best-of format or settle into free play. The computer commits to its move before you make yours, and Python keeps the score.
+A Python game with a minimal, single-screen browser interface, animated reveals, and a local match history. Pick a best-of format or settle into free play. The computer commits to its move before you make yours, and Python keeps the score.
 
 ![Rock Paper Scissors desktop interface](docs/desktop.png)
 
 <details>
 <summary>See the mobile layout</summary>
 
-<img src="docs/mobile.png" width="320" alt="The game on a narrow mobile screen, with move cards and match settings stacked vertically">
+<img src="docs/mobile.png" width="320" alt="The game on a narrow mobile screen, with all three moves and the scoreboard visible on one screen">
 
 </details>
 
@@ -46,9 +46,9 @@ Once installed, `rps` and `python -m rock_paper_scissors` also launch the interf
 - **Best of 3, 5, or 7:** first to 2, 3, or 4 wins. Draws don't advance the target.
 - **Free play:** keep playing until you choose to finish the session.
 - **Animated reveals:** both choices appear together, with a short explanation of the result.
-- **Live scoreboard and round log:** see the score, draw count, and five most recent rounds.
+- **Live scoreboard and round log:** see the score, win indicators, and draw count; the current round log is available in History.
 - **Saved history:** completed and unfinished sessions, plus match wins and win rate.
-- **Keyboard play:** press `R`, `P`, or `S`; shortcuts pause while typing a name or reading the rules.
+- **Keyboard play:** press `R`, `P`, or `S`; shortcuts pause while typing a name or using a dialog.
 - **Responsive layout:** move cards remain usable on small screens; reduced-motion preferences disable the animation.
 
 Rock crushes scissors. Scissors cuts paper. Paper covers rock. The same move is a draw. Best-of matches can take more rounds than their name suggests because draws are replayed.
@@ -74,7 +74,7 @@ Browser (HTML, CSS, JavaScript)
 
 **SQLite stores summaries.** Each finished session has a unique ID; saving the same session twice does not duplicate it. Transactions protect database updates. Unknown database versions and unrelated databases are rejected, while a storage error leaves gameplay usable and displays a warning.
 
-**The interface stays lightweight.** Plain HTML, CSS, and JavaScript handle rendering and interaction. Hand illustrations are inline SVG, fonts are system fonts, and assets are served locally. Player-provided text is inserted with `textContent`. Keyboard focus, live result announcements, a native rules dialog, and reduced-motion support are part of the interface.
+**The interface stays lightweight.** Plain HTML, CSS, and JavaScript handle rendering and interaction. Move icons use the consistent Tabler SVG set, fonts are system fonts, and assets are served locally. Settings, rules, and saved history open in dialogs to keep the arena in focus. Player-provided text is inserted with `textContent`. Keyboard focus, live result announcements, a native rules dialog, and reduced-motion support are part of the interface.
 
 ## Project layout
 
@@ -108,7 +108,7 @@ CI lives in the repository root at [`.github/workflows/rock-paper-scissors.yml`]
 
 ## History and sessions
 
-Saved summaries live at `~/.rps-studio/history.sqlite3`, independent of the directory used to launch the game. The History screen shows the latest 50 sessions and totals across the whole database. It includes all player names on this local server. Names are labels, not authenticated accounts.
+Saved summaries live at `~/.rps-studio/history.sqlite3`, independent of the directory used to launch the game. The History dialog shows the latest 50 sessions and totals across the whole database. It includes all player names on this local server. Names are labels, not authenticated accounts.
 
 Match win rate counts completed best-of matches. Free-play sessions and unfinished matches appear in history but are excluded from that rate. Dates are stored in UTC and displayed in the browser's local time.
 
@@ -147,3 +147,7 @@ Start a best-of-three match, play a couple of rounds, and open History. Then swi
 ## Course reference
 
 Inspired by Pytopia's [Rock Paper Scissors project brief](https://github.com/pytopia/Project-Based-Python/tree/59b349e0423d8260ce77e4fc752dd8c111ed3349/Lectures/06%20Level%20I/01%20Rock%20Paper%20Scissors). The browser interface, match formats, persistence, API, packaging, and automated checks were developed for this portfolio version.
+
+## Icons
+
+Hand icons are from [Tabler Icons](https://github.com/tabler/tabler-icons), by Paweł Kuna, under the MIT license. See [LICENSE-TABLER.txt](LICENSE-TABLER.txt).

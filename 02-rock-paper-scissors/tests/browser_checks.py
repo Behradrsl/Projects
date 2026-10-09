@@ -67,7 +67,7 @@ class BrowserChecks(unittest.TestCase):
         if os.environ.get("RPS_CAPTURE"):
             path = Path(__file__).resolve().parents[1] / "docs" / "desktop.png"
             path.parent.mkdir(exist_ok=True)
-            self.page.screenshot(path=path, full_page=True)
+            self.page.screenshot(path=path, full_page=True, animations="disabled")
         self.pick("rock")
         expect(self.page.locator("#player-score")).to_have_text("1")
         self.pick("rock")
@@ -85,9 +85,11 @@ class BrowserChecks(unittest.TestCase):
     def test_free_play_draw_keyboard_rules_and_refresh(self):
         self.page.get_by_role("button", name="Free play", exact=True).click()
         expect(self.page.locator("#match-label")).to_have_text("FREE PLAY")
+        self.page.get_by_role("button", name="Settings", exact=True).click()
         self.page.locator("#player-name").fill("Ada")
         self.page.locator("#player-name").press("r")
         expect(self.page.locator("#round-count")).to_have_text("0")
+        self.page.get_by_role("button", name="Close settings").click()
         self.page.locator("#page-heading").click()
         self.page.keyboard.press("s")
         expect(self.page.locator("#draw-count")).to_have_text("1 draw")
@@ -120,6 +122,11 @@ class BrowserChecks(unittest.TestCase):
         self.page.reload()
         expect(self.page.locator('[data-move="rock"]')).to_be_enabled()
         self.assertLessEqual(self.page.evaluate("document.documentElement.scrollWidth"), 390)
+        self.assertLessEqual(
+            self.page.locator('[data-move="rock"]').bounding_box()["y"]
+            + self.page.locator('[data-move="rock"]').bounding_box()["height"],
+            844,
+        )
         if os.environ.get("RPS_CAPTURE"):
             path = Path(__file__).resolve().parents[1] / "docs" / "mobile.png"
             path.parent.mkdir(exist_ok=True)
@@ -132,8 +139,9 @@ class BrowserChecks(unittest.TestCase):
 
     def test_reduced_motion_and_player_name_is_rendered_as_text(self):
         self.page.emulate_media(reduced_motion="reduce")
+        self.page.get_by_role("button", name="Settings", exact=True).click()
         self.page.locator("#player-name").fill("<b>Ada</b>")
-        self.page.get_by_role("button", name="New match", exact=False).click()
+        self.page.get_by_role("button", name="Start new match", exact=True).click()
         expect(self.page.locator("#player-label")).to_have_text("<b>Ada</b>")
         expect(self.page.locator("#player-label b")).to_have_count(0)
         self.pick("rock")
