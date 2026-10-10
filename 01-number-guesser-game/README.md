@@ -4,7 +4,7 @@
 
 Guess a randomly selected number, use higher/lower hints to narrow the search, and finish before your attempts run out. Choose a difficulty, track your performance over time, and compare winning rounds on a local leaderboard.
 
-This project extends the course's Number Guesser brief into a complete command-line application. It demonstrates package organization, domain modeling, defensive input validation, file persistence, automated testing, and continuous integration.
+A command-line number guessing game with configurable difficulty and saved results. It demonstrates package organization, domain modeling, defensive input validation, file persistence, automated testing, and continuous integration.
 
 ## Quick start
 

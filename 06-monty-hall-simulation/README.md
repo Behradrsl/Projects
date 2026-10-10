@@ -1,6 +1,6 @@
 # Monty Hall Simulation
 
-A simple terminal game and simulation based on Pytopia's Level I Monty Hall exercise. Play a round yourself, then compare how often keeping or switching doors wins.
+A terminal game and simulation of the Monty Hall problem. Play a round yourself, then compare how often keeping or switching doors wins.
 
 ## Run it
 
@@ -76,5 +76,3 @@ ruff format --check .
 Tests check all nine prize/initial-choice combinations, both possible host reveals when the contestant picks the car, seed repeatability, invalid input, terminal play, and launching from another folder. They establish the 3-versus-6 advantage exactly, without relying on a random sample to pass.
 
 GitHub Actions runs the checks automatically.
-
-Based on Pytopia's **Lectures → Level I → Monty Hall Problem Simulation** exercise. This version keeps the terminal focus, adding repeatable comparisons and tests; the optional Streamlit extension is not included.

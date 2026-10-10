@@ -176,6 +176,4 @@ Optional environment variables for browser checks:
 
 ## Credits
 
-Based on the Pytopia Project-Based Python Rock Paper Scissors exercise.
-
 The colored cartoon hand illustrations are custom SVG artwork based on the supplied visual reference. The project also retains the earlier Tabler icon license in [LICENSE-TABLER.txt](LICENSE-TABLER.txt).

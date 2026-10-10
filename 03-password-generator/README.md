@@ -1,6 +1,6 @@
 # Password Generator
 
-A small Python project based on the teacher's class-based Password Generator solution. Choose a random password, a memorable word password, or a numeric PIN from a terminal menu.
+A Python app for generating passwords. Choose a random password, a memorable word password, or a numeric PIN from a terminal menu.
 
 ## Run it
 
@@ -50,7 +50,7 @@ Random passwords include uppercase and lowercase letters and every enabled chara
 
 ## How the code works
 
-`PasswordGenerator` is an abstract base class. `RandomPasswordGenerator`, `MemorablePasswordGenerator`, and `PinCodeGenerator` each implement `generate()`, following the course's object-oriented design. Python's [`secrets`](https://docs.python.org/3/library/secrets.html) module supplies the randomness.
+`PasswordGenerator` is an abstract base class. `RandomPasswordGenerator`, `MemorablePasswordGenerator`, and `PinCodeGenerator` each implement `generate()`. Python's [`secrets`](https://docs.python.org/3/library/secrets.html) module supplies the randomness.
 
 ```text
 03-password-generator/
@@ -68,7 +68,7 @@ Random passwords include uppercase and lowercase letters and every enabled chara
     └── test_cli.py
 ```
 
-The bundled word list keeps the project runnable offline. To use the course's NLTK corpus, optionally install it:
+The bundled word list keeps the project runnable offline. To use the NLTK word corpus, optionally install it:
 
 ```bash
 python3 -m pip install -e ".[corpus]"
@@ -103,7 +103,3 @@ python3 -m unittest discover -s tests -v
 ruff check .
 ruff format --check .
 ```
-
-## Course reference
-
-Based on Pytopia's Level I Password Generator exercise and its class-based solution. The terminal menu, bundled fallback, validation, and automated tests are additions to make the exercise easier to run and explore.

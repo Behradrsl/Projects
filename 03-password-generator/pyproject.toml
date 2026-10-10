@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "portfolio-password-generator"
 version = "1.0.0"
-description = "A simple CLI password generator based on the Pytopia Python course."
+description = "A terminal app for random passwords, memorable passwords, and PINs."
 requires-python = ">=3.10"
 readme = "README.md"
 dependencies = []

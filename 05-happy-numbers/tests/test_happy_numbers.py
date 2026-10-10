@@ -14,7 +14,7 @@ from main import main
 
 
 class HappyNumberTests(unittest.TestCase):
-    def test_course_examples_and_known_unhappy_numbers(self):
+    def test_known_happy_and_unhappy_numbers(self):
         for number in (1, 7, 10, 19, 44, 86, 139):
             with self.subTest(number=number):
                 self.assertTrue(is_happy(number))

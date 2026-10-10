@@ -1,4 +1,4 @@
-"""The course's password generator, with a small Streamlit interface."""
+"""Generate passwords through a Streamlit interface."""
 
 import re
 

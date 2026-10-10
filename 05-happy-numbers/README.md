@@ -1,6 +1,6 @@
 # Happy Numbers
 
-A small Python program based on Pytopia's Level I Happy Numbers exercise. Enter a positive whole number and see whether repeatedly adding the squares of its digits reaches 1.
+A Python program that checks whether a number is happy. Enter a positive whole number and see whether repeatedly adding the squares of its digits reaches 1.
 
 ## Run it
 
@@ -36,7 +36,7 @@ In interactive mode, enter another number to continue, or `q` to quit. `Ctrl+C` 
 
 ## How it works
 
-The algorithm follows the teacher's solution: a loop updates the number, while a set remembers numbers already visited. It stops at 1 or the first repeated number. A repeated number means the process has entered a cycle, so the number is not happy.
+A loop replaces the number with the sum of its squared digits, while a set remembers numbers already visited. It stops at 1 or the first repeated number. A repeated number means the process has entered a cycle, so the number is not happy.
 
 For example, 2 follows `2 → 4 → 16 → 37 → 58 → 89 → 145 → 42 → 20 → 4`. The second 4 makes the cycle visible.
 
@@ -79,6 +79,4 @@ ruff check .
 ruff format --check .
 ```
 
-Tests cover the course examples, exact sequences, cycle detection, invalid input, and launching from another folder. GitHub Actions runs tests and style checks automatically.
-
-Based on Pytopia's **Lectures → Level I → Happy Numbers** exercise. The terminal prompts, displayed calculation steps, and automated tests extend the teaching solution.
+Tests cover happy and unhappy numbers, exact sequences, cycle detection, invalid input, and launching from another folder. GitHub Actions runs tests and style checks automatically.

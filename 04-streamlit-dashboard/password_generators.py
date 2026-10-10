@@ -1,4 +1,4 @@
-"""Password generators based on the course's class-based solution."""
+"""Generators for random passwords, memorable passwords, and PINs."""
 
 import secrets
 import string

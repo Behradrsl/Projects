@@ -1,6 +1,6 @@
 # Password Generator Dashboard
 
-The Streamlit follow-up to project 03, based on Pytopia's Level I dashboard exercise. Generate random passwords, memorable word passwords, and PINs through a small browser interface.
+A password generator built with Streamlit. Generate random passwords, memorable word passwords, and PINs through a small browser interface.
 
 ![Password Generator Dashboard](docs/dashboard.png)
 
@@ -70,5 +70,3 @@ ruff format --check .
 ```
 
 Tests cover the generators and all three dashboard modes, including invalid custom words and type changes. They need no word-corpus download. GitHub Actions runs these checks automatically.
-
-Based on the Password Generator Dashboard exercise in Pytopia's **Lectures → Level I → Streamlit Dashboard**. The form, copyable result, validation, offline fallback, and tests are additions for this version.

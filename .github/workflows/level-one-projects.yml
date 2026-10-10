@@ -1,4 +1,4 @@
-name: Level I projects checks
+name: Projects 04-06 checks
 
 on:
   push:
