@@ -10,6 +10,11 @@ A collection of Python projects with runnable code and project documentation.
 | [04 · Streamlit Dashboard](04-streamlit-dashboard/) | A browser interface for the three password generators, built with Streamlit. |
 | [05 · Happy Numbers](05-happy-numbers/) | Check a number and follow its squared-digit sequence to 1 or a cycle. |
 | [06 · Monty Hall Simulation](06-monty-hall-simulation/) | Play the door game and compare keeping versus switching over repeated trials. |
+| [07 · Contact Book](07-contact-book/) | Save, search, edit, and delete contacts in a local SQLite database. |
+| [08 · Tic Tac Toe](08-tic-tac-toe/) | A two-player terminal game with validated moves and replay. |
+| [09 · Sorting Algorithms](09-sorting-algorithms/) | Compare bubble, insertion, and selection sort on the same numbers. |
+| [10 · YouTube Downloader](10-youtube-downloader/) | Download one video with audio, progress, and a resolution limit. |
+| [11 · Currency Converter](11-currency-converter/) | Convert between 20 currencies with dated reference rates in a browser. |
 
 ## Run Number Guesser
 
