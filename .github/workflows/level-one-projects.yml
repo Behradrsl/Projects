@@ -1,0 +1,40 @@
+name: Level I projects checks
+
+on:
+  push:
+    paths:
+      - "04-streamlit-dashboard/**"
+      - "05-happy-numbers/**"
+      - "06-monty-hall-simulation/**"
+      - ".github/workflows/level-one-projects.yml"
+  pull_request:
+    paths:
+      - "04-streamlit-dashboard/**"
+      - "05-happy-numbers/**"
+      - "06-monty-hall-simulation/**"
+      - ".github/workflows/level-one-projects.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [04-streamlit-dashboard, 05-happy-numbers, 06-monty-hall-simulation]
+        python-version: ["3.10", "3.13"]
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m unittest discover -s tests -v
+      - run: ruff check .
+      - run: ruff format --check .

@@ -7,6 +7,9 @@ A collection of Python projects with runnable code and project documentation.
 | [01 · Number Guesser](01-number-guesser-game/) | A tested CLI game with three difficulty levels, persistent statistics, and local leaderboards. |
 | [02 · Rock Paper Scissors](02-rock-paper-scissors/) | A Python game with an animated browser interface, best-of matches, and SQLite history. |
 | [03 · Password Generator](03-password-generator/) | A simple CLI tool for random passwords, memorable word passwords, and PINs. |
+| [04 · Streamlit Dashboard](04-streamlit-dashboard/) | A browser interface for the three password generators, built with Streamlit. |
+| [05 · Happy Numbers](05-happy-numbers/) | Check a number and follow its squared-digit sequence to 1 or a cycle. |
+| [06 · Monty Hall Simulation](06-monty-hall-simulation/) | Play the door game and compare keeping versus switching over repeated trials. |
 
 ## Run Number Guesser
 
