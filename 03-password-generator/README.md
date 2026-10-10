@@ -1,40 +1,23 @@
 # Password Generator
 
-A simple Python command-line tool for generating random passwords, memorable word passwords, and PIN codes. Based on the Password Generator exercise in Pytopia's Level I lectures.
+A small Python project based on the teacher's class-based Password Generator solution. Choose a random password, a memorable word password, or a numeric PIN from a terminal menu.
 
-The project follows the course's class-based solution: an abstract `PasswordGenerator` base class and three subclasses, each with its own `generate()` method. A small terminal menu lets you choose a type and adjust its options.
+## Run it
 
-## Getting started
+Requires **Python 3.10 or newer**. The app works without installing packages or downloading data.
 
-Requires **Python 3.10 or newer**.
-
-From the repository root, on macOS or Linux:
+From the repository root:
 
 ```bash
 cd 03-password-generator
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m nltk.downloader words
-python main.py
+python3 main.py
 ```
 
-On Windows PowerShell:
+On Windows, use `py main.py`.
 
-```powershell
-cd 03-password-generator
-py -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-python -m nltk.downloader words
-python main.py
-```
+In VS Code, open **`03-password-generator/main.py`** and choose **Run Python File in Terminal**. The menu needs a terminal that accepts input. `__init__.py` is a package file, not the application launcher.
 
-The NLTK word list is a one-time download for memorable passwords. Once it is installed, all three generators work offline. Random passwords and PINs also work without downloading the word list.
-
-After installation, `password-generator` and `python -m password_generator` also start the menu.
-
-## Using the menu
+## How to use it
 
 ```text
 Password Generator
@@ -47,74 +30,80 @@ Choose a type. Press Enter at a prompt to use its default.
 Your choice:
 ```
 
-Choose a type, answer the prompts, and the result appears in the terminal. Press Enter to accept a default. Choose `0` or press `Ctrl+C` to exit.
+Choose `1`, `2`, or `3`, then answer the prompts. Press Enter to use a default.
 
 | Type | Options | Default |
 | --- | --- | --- |
-| Random password | Length (8–128), include numbers, include symbols | 16 characters, numbers and symbols enabled |
-| Memorable password | Word count (3–12), separator, capitalize each word | 4 words, hyphens, lowercase |
+| Random password | Length (8–128), numbers, symbols | 16 characters, numbers and symbols included |
+| Memorable password | Words (3–12), separator, capitalization | 4 words separated by hyphens |
 | PIN code | Length (4–12) | 6 digits |
 
-Random passwords always include lowercase and uppercase letters, plus at least one number and symbol when enabled. Memorable passwords choose words independently, so repeats are possible. The NLTK vocabulary is filtered to alphabetic ASCII words of 4–8 letters; some words may be uncommon. PINs are strings so leading zeroes are preserved.
+After a result appears:
 
-## Using the classes
+- Press **Enter** to generate another with the same settings.
+- Type **m** to return to the menu.
+- Type **q** to quit. `Ctrl+C` also exits cleanly.
 
-```python
-from password_generator.generators import (
-    MemorablePasswordGenerator,
-    PinCodeGenerator,
-    RandomPasswordGenerator,
-)
+For memorable passwords, type `none` at the separator prompt to join words without separators, or enter a space to separate them with spaces.
 
-print(RandomPasswordGenerator(length=20).generate())
-print(MemorablePasswordGenerator(no_of_words=5, capitalization=True).generate())
-print(PinCodeGenerator(length=6).generate())
-```
+Random passwords include uppercase and lowercase letters and every enabled character type. Word passwords use familiar words, with repeats allowed. PINs preserve leading zeroes. Nothing is saved by the app; results remain visible in your terminal scrollback.
 
-For a custom vocabulary, pass `vocabulary=["river", "cloud", "forest", "stone"]` to `MemorablePasswordGenerator`. This also makes it possible to test the class without downloading NLTK data.
+## How the code works
 
-## What this project practices
-
-- Abstract classes, inheritance, and method overriding
-- String handling and configurable generators
-- User input validation and readable terminal interaction
-- Automated tests with Python's `unittest`
-
-The main change from the teaching solution is using Python's [`secrets`](https://docs.python.org/3/library/secrets.html) module for password randomness. Generated values are only printed; the application does not save them. They remain visible in terminal scrollback. Short PINs and small custom vocabularies provide fewer possible combinations, and no password-strength score is claimed.
-
-## Project structure
+`PasswordGenerator` is an abstract base class. `RandomPasswordGenerator`, `MemorablePasswordGenerator`, and `PinCodeGenerator` each implement `generate()`, following the course's object-oriented design. Python's [`secrets`](https://docs.python.org/3/library/secrets.html) module supplies the randomness.
 
 ```text
 03-password-generator/
-├── main.py                         # Run from a checkout
-├── pyproject.toml                  # Installation and tool configuration
+├── main.py                     # Start here
+├── README.md
+├── pyproject.toml
 ├── requirements.txt
 ├── src/password_generator/
 │   ├── __init__.py
-│   ├── __main__.py                  # Terminal menu and input prompts
-│   └── generators.py               # Base class and three generators
+│   ├── __main__.py              # Menu and input prompts
+│   ├── generators.py           # Base class and three generators
+│   └── words.txt               # Bundled common-word fallback
 └── tests/
     ├── test_generators.py
     └── test_cli.py
 ```
 
-## Tests
+The bundled word list keeps the project runnable offline. To use the course's NLTK corpus, optionally install it:
 
 ```bash
-python -m pip install -e ".[dev]"
-python -m unittest discover -s tests -v
+python3 -m pip install -e ".[corpus]"
+python3 -m nltk.downloader words
+```
+
+When NLTK and its corpus are available, memorable passwords use its `en-basic` list of familiar English words. Otherwise, they use `words.txt`. Neither small word list is a replacement for a large password-manager passphrase dictionary.
+
+## Optional installation
+
+To install the `password-generator` command or import the classes into another project:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+For example:
+
+```python
+from password_generator.generators import RandomPasswordGenerator
+
+print(RandomPasswordGenerator(length=20).generate())
+```
+
+## Tests
+
+The tests cover character options, lengths, leading zeroes, word-list fallbacks, input validation, regeneration, and running the app without installed dependencies.
+
+```bash
+python3 -m pip install -e ".[dev]"
+python3 -m unittest discover -s tests -v
 ruff check .
 ruff format --check .
 ```
 
-Tests use a small supplied vocabulary and do not need the corpus or network access. GitHub Actions runs the tests and style checks automatically.
-
-## Troubleshooting
-
-- **Missing word list:** run `python -m nltk.downloader words` in the same environment. See the [NLTK data instructions](https://www.nltk.org/data.html) for custom download locations.
-- **Python certificate error on macOS:** if you installed Python from python.org, run its `Install Certificates.command` from `/Applications/Python 3.x/`, then retry the download. Keep certificate verification enabled.
-- **Module not found:** activate the virtual environment and run `python -m pip install -r requirements.txt` from this project folder.
-
 ## Course reference
 
-Adapted from the [Pytopia Password Generator exercise](https://github.com/pytopia/Project-Based-Python/tree/59b349e0423d8260ce77e4fc752dd8c111ed3349/Lectures/06%20Level%20I/02%20Password%20Generator), following its object-oriented solution and NLTK vocabulary requirement.
+Based on Pytopia's Level I Password Generator exercise and its class-based solution. The terminal menu, bundled fallback, validation, and automated tests are additions to make the exercise easier to run and explore.

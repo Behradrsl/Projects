@@ -8,9 +8,10 @@ version = "1.0.0"
 description = "A simple CLI password generator based on the Pytopia Python course."
 requires-python = ">=3.10"
 readme = "README.md"
-dependencies = ["nltk>=3.9.1,<4"]
+dependencies = []
 
 [project.optional-dependencies]
+corpus = ["nltk>=3.9.1,<4"]
 dev = ["ruff==0.11.13"]
 
 [project.scripts]
@@ -18,6 +19,9 @@ password-generator = "password_generator.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+password_generator = ["words.txt"]
 
 [tool.ruff]
 target-version = "py310"

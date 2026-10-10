@@ -78,16 +78,26 @@ class GeneratorTests(unittest.TestCase):
             with self.subTest(vocabulary=vocabulary), self.assertRaises(ValueError):
                 MemorablePasswordGenerator(vocabulary=vocabulary)
 
-    def test_missing_corpus_has_setup_instructions(self):
-        with patch("nltk.corpus.words", new=Mock()) as corpus:
-            corpus.words.side_effect = LookupError("Corpus unavailable")
-            with self.assertRaisesRegex(ValueError, "python -m nltk.downloader words"):
-                MemorablePasswordGenerator()
-
-    def test_nltk_vocabulary_is_filtered_and_deduplicated(self):
-        with patch("nltk.corpus.words", new=Mock()) as corpus:
-            corpus.words.return_value = ["River", "river", "forest", "a", "café", "two words"]
+    def test_missing_nltk_uses_bundled_words(self):
+        with patch.dict("sys.modules", {"nltk.corpus": None}):
             generator = MemorablePasswordGenerator()
+            self.assertIn("river", generator.vocabulary)
+            self.assertEqual(len(generator.generate().split("-")), 4)
+
+    def test_missing_corpus_uses_bundled_words(self):
+        corpus = Mock()
+        corpus.words.side_effect = LookupError("Corpus unavailable")
+        with patch.dict("sys.modules", {"nltk.corpus": Mock(words=corpus)}):
+            generator = MemorablePasswordGenerator()
+            self.assertIn("river", generator.vocabulary)
+            self.assertEqual(len(generator.generate().split("-")), 4)
+
+    def test_nltk_basic_vocabulary_is_filtered_and_deduplicated(self):
+        corpus = Mock()
+        corpus.words.return_value = ["River", "river", "forest", "a", "café", "two words"]
+        with patch.dict("sys.modules", {"nltk.corpus": Mock(words=corpus)}):
+            generator = MemorablePasswordGenerator()
+            corpus.words.assert_called_once_with("en-basic")
             self.assertEqual(generator.vocabulary, ("forest", "river"))
 
     def test_pin_is_numeric_and_keeps_leading_zeroes(self):

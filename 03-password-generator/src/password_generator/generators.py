@@ -4,6 +4,7 @@ import secrets
 import string
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
+from pathlib import Path
 
 
 class PasswordGenerator(ABC):
@@ -54,19 +55,18 @@ class MemorablePasswordGenerator(PasswordGenerator):
         if any(not character.isprintable() for character in separator):
             raise ValueError("The separator must contain printable characters.")
         if vocabulary is None:
-            from nltk.corpus import words
-
             try:
-                vocabulary = words.words()
-            except LookupError as exc:
-                raise ValueError(
-                    "Install the word list first: python -m nltk.downloader words"
-                ) from exc
+                from nltk.corpus import words
+
+                # The basic list contains familiar words rather than the full dictionary.
+                vocabulary = words.words("en-basic")
+            except (ImportError, LookupError):
+                vocabulary = Path(__file__).with_name("words.txt").read_text().split()
             vocabulary = sorted(
                 {
                     word.lower()
                     for word in vocabulary
-                    if word.isascii() and word.isalpha() and 4 <= len(word) <= 8
+                    if word.isascii() and word.isalpha() and 3 <= len(word) <= 10
                 }
             )
         if isinstance(vocabulary, str | bytes) or not vocabulary:
