@@ -13,14 +13,16 @@ cd 04-streamlit-dashboard
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-python -m streamlit run app.py
+python main.py
 ```
 
 On Windows, create the environment with `py -m venv .venv` and activate it with `.venv\Scripts\Activate.ps1`.
 
 Open **http://localhost:8501** if the browser does not open automatically. Keep the terminal running; press `Ctrl+C` to stop. If the port is busy, add `--server.port 8504` to the launch command.
 
-Use **`python -m streamlit run app.py`**, rather than running `app.py` with the IDE's normal Python Run button. Streamlit provides the browser interface and session lifecycle.
+Open **`main.py`** in VS Code and use **Run Python File in Terminal**, or run `python main.py`. The launcher uses this project's `.venv` when it exists, so an active environment from another project does not get in the way. Without a local `.venv`, it uses the current Python interpreter.
+
+You can also activate this project's environment and run `python -m streamlit run app.py` directly. `python app.py` does not start a Streamlit server.
 
 ## Using the dashboard
 
@@ -44,6 +46,7 @@ Results are held only in the current Streamlit session, not saved to disk or a d
 
 ```text
 04-streamlit-dashboard/
+├── main.py                      # Start here (terminal or IDE)
 ├── app.py                       # Streamlit interface
 ├── password_generators.py       # Base class and three generators
 ├── words.txt                    # Offline word list
@@ -53,7 +56,8 @@ Results are held only in the current Streamlit session, not saved to disk or a d
 ├── docs/dashboard.png
 └── tests/
     ├── test_app.py              # Actual Streamlit widget tests
-    └── test_generators.py
+    ├── test_generators.py
+    └── test_launcher.py
 ```
 
 ## Checks
