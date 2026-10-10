@@ -1,0 +1,16 @@
+Alex Morgan
+alex@example.com | Berlin
+
+Summary
+Junior Python developer building practical command-line tools and web applications.
+
+Skills
+Python, SQL, Git, testing, Streamlit
+
+Experience
+Personal projects
+- Built a contact manager with SQLite storage and automated tests.
+- Developed an image converter with resizing and batch downloads.
+
+Education
+BSc Computer Science

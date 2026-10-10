@@ -1,0 +1,67 @@
+[
+  {
+    "question": "What are your opening hours?",
+    "answer": "This example shop is open Monday to Friday, 9:00–17:00.",
+    "keywords": [
+      "hours",
+      "open",
+      "opening",
+      "closed",
+      "time"
+    ]
+  },
+  {
+    "question": "How do I contact support?",
+    "answer": "For this example shop, contact support@example.com. Replace this address before using the bot for a real business.",
+    "keywords": [
+      "contact",
+      "support",
+      "email",
+      "helpdesk"
+    ]
+  },
+  {
+    "question": "What is the return policy?",
+    "answer": "This example shop accepts unused items within 30 days with a receipt.",
+    "keywords": [
+      "return",
+      "returns",
+      "refund",
+      "refunds",
+      "policy"
+    ]
+  },
+  {
+    "question": "Where do you deliver?",
+    "answer": "This example shop delivers within Germany.",
+    "keywords": [
+      "shipping",
+      "ship",
+      "delivery",
+      "deliver",
+      "country",
+      "countries"
+    ]
+  },
+  {
+    "question": "How long does delivery take?",
+    "answer": "Example delivery time is 3–5 working days after dispatch.",
+    "keywords": [
+      "long",
+      "days",
+      "arrive",
+      "arrival",
+      "dispatch"
+    ]
+  },
+  {
+    "question": "Can I track my order?",
+    "answer": "The example shop emails a tracking link after dispatch.",
+    "keywords": [
+      "track",
+      "tracking",
+      "order",
+      "status"
+    ]
+  }
+]

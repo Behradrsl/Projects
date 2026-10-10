@@ -1,0 +1,2 @@
+streamlit>=1.45,<2
+Pillow>=11,<13
