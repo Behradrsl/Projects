@@ -1,68 +1,39 @@
 # Number Guesser
 
-Guess a randomly selected number, use higher/lower hints to narrow the search, and finish before your attempts run out. Choose a difficulty, track your performance over time, and compare winning rounds on a local leaderboard.
+A terminal game with higher and lower hints, three difficulty levels, and saved scores. Enter a guess, narrow the possible range, and find the number before your attempts run out.
 
-A command-line number guessing game with configurable difficulty and saved results. It demonstrates package organization, domain modeling, defensive input validation, file persistence, automated testing, and continuous integration.
+## Run it
 
-## Quick start
+Requires **Python 3.10 or newer**. No packages are needed.
 
-Requires **Python 3.10 or newer**. The game has **no third-party runtime dependencies**.
-
-From this project's directory:
+From the repository root:
 
 ```bash
+cd 01-number-guesser-game
 python3 main.py
 ```
 
-On Windows, use `py main.py` if `python3` is unavailable.
+On Windows, use `py main.py`. In VS Code, open **main.py** and choose **Run Python File in Terminal**.
 
-To go straight into a round:
+Enter a player name and choose a difficulty. Press Enter to use the default name (`Player`) or difficulty (`normal`). To skip those prompts:
 
 ```bash
 python3 main.py --name Ada --difficulty normal
 ```
 
-## Install the command
+## How to play
 
-Create a virtual environment and install the package in editable mode:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -e .
-number-guesser
-```
-
-On Windows PowerShell, activate with `.venv\Scripts\Activate.ps1`.
-
-After installation, `python -m number_guesser` is also supported. Installation needs setuptools as a build dependency; direct execution with `main.py` works without downloading anything.
-
-## Gameplay
-
-| Difficulty | Number range | Attempts | Penalty per wrong guess |
+| Difficulty | Range | Attempts | Points lost per wrong guess |
 | --- | --- | --- | --- |
-| Easy | 1–50 | 8 | 10 points |
-| Normal | 1–100 | 7 | 15 points |
-| Hard | 1–1,000 | 10 | 10 points |
+| Easy | 1–50 | 8 | 10 |
+| Normal | 1–100 | 7 | 15 |
+| Hard | 1–1,000 | 10 | 10 |
 
-Every round starts at 100 points. A winning score is `max(0, 100 − wrong_guesses × penalty)`. Losing or abandoning a round scores zero. A correct guess on the last attempt still wins.
+Each wrong guess gives a higher or lower hint. The terminal shows the remaining range and attempts before your next guess. Invalid input, repeated guesses, and numbers outside the original range do not use an attempt. A new guess outside the narrowed range still uses an attempt.
 
-Each incorrect guess provides a direction and updates the possible range. Invalid input, numbers outside the original range, and repeated guesses cost neither points nor attempts. A distinct guess outside the narrowed hint range is still a valid guess and costs an attempt. The difficulty settings allow enough attempts for a binary-search strategy to succeed.
+A win starts at 100 points, minus the penalty for each wrong guess, with a minimum of zero. Losing or quitting a round scores zero. A correct guess on the last attempt still wins.
 
-During a round:
-
-| Input | Action |
-| --- | --- |
-| A whole number | Submit a guess |
-| `help` or `?` | Show the rules and commands |
-| `history` | List guesses in the current round |
-| `quit`, `q`, or `exit` | Abandon the round and exit |
-
-After a round, replay, change difficulty, view personal statistics, or exit. `Ctrl+C` and end-of-input exit cleanly; when they occur during a round, the round is recorded as abandoned unless saving is disabled.
-
-### Example session
-
-An illustrative normal round with a secret of 42:
+For example, in a normal round where the secret number is 42:
 
 ```text
 Ada, guess a number between 1 and 100.
@@ -80,77 +51,69 @@ Correct! The number was 42.
 You won in 2 guesses. Final score: 85/100
 ```
 
-## Command-line options
+During a round, type `help` for rules, `history` to see your guesses, or `quit` to exit. After the result, press Enter to play again, type `m` to change difficulty, `s` to see statistics, or `n` to exit. `Ctrl+C` and end-of-input also exit cleanly.
+
+## Saved results
+
+Rounds are saved to `~/.number_guesser/scores.json`. Statistics include wins, losses, abandoned rounds, win rate, and the top five winning rounds for each difficulty. Rankings use score, then fewest guesses, then earliest date. Player names are case-sensitive and accept 1–24 printable characters.
 
 ```bash
-# View all saved statistics and top five winning rounds per difficulty
+# Show all saved results
 python3 main.py --stats
 
-# Filter statistics by an exact player name
+# Show one player's results
 python3 main.py --stats --name Ada
 
-# Practice without writing a history file
-python3 main.py --difficulty hard --no-save
+# Play without saving
+python3 main.py --no-save
 
-# Use a different history location
+# Choose a different history file
 python3 main.py --scores-file ./data/scores.json
 
-# Inspect available arguments or the package version
+# Show all options
 python3 main.py --help
-python3 main.py --version
 ```
 
-Player names are case-sensitive, contain 1–24 printable characters, and default to `Player`. Rankings compare rounds within the same difficulty: highest score first, then fewer guesses, then earliest timestamp. Statistics include abandoned rounds in the win-rate denominator.
+If the history file cannot be read or written, the game reports the problem and continues. Existing unreadable data is preserved. Use a different `--scores-file` path to start a new history. The history file is intended for one running game at a time.
 
-## Design
+## How the code works
 
-```text
-01-number-guesser-game/
-├── main.py                     # Checkout entry point
-├── pyproject.toml              # Package metadata and console command
-├── src/
-│   └── number_guesser/
-│       ├── __init__.py
-│       ├── __main__.py          # python -m number_guesser
-│       ├── game.py              # Round state, validation, hints, scoring
-│       ├── cli.py               # Terminal interaction and orchestration
-│       └── storage.py           # Validated JSON records and atomic writes
-└── tests/
-    ├── test_game.py
-    ├── test_cli.py
-    └── test_storage.py
-```
+- `main.py` launches the game directly from a checkout.
+- `src/number_guesser/cli.py` handles prompts, menus, and replay.
+- `src/number_guesser/game.py` validates guesses and manages hints, attempts, and scoring.
+- `src/number_guesser/storage.py` reads and validates JSON records and saves them with atomic file replacement.
 
-The game engine has no terminal or filesystem dependencies. It owns the round state and permits transitions from `playing` to `won`, `lost`, or `quit`. Finished rounds reject further guesses. Supplying a secret in tests makes results deterministic without adding a cheat option to the CLI.
+The game logic is independent of the terminal and storage, so it can be tested with a fixed secret number.
 
-The CLI handles prompts and translates user actions into engine calls. Immutable dataclasses represent difficulty profiles, guess results, and saved rounds. The storage module validates the versioned JSON schema and the consistency of scores before accepting historical data.
+## Optional installation
 
-JSON keeps the history easy to inspect and avoids a database dependency for a local game. Saved data lives at `~/.number_guesser/scores.json`, independent of the working directory. Timestamps use UTC. Writes go to a temporary file in the same directory, are flushed to disk, and replace the destination atomically. A malformed or unsupported history file is preserved, a warning explains the failure, and gameplay continues without saving that round.
-
-This is a local, single-process application. Simultaneous processes writing to the same history file are unsupported. Scores are editable local data, so the leaderboard is intended for personal tracking rather than competitive verification. To recover from corrupt history, back up the file and choose a new path with `--scores-file`.
-
-## Development and verification
-
-After installing the package, run the standard-library test suite:
+To install the `number-guesser` command, create and activate a virtual environment, then run:
 
 ```bash
-python -m unittest discover -s tests -v
+python3 -m pip install -e .
+number-guesser
 ```
 
-On macOS or Linux, tests also run directly from a checkout:
+After installation, `python3 -m number_guesser` also works.
+
+## Checks
+
+From this project folder, run the standard-library tests without installing the package:
 
 ```bash
 PYTHONPATH=src python3 -m unittest discover -s tests -v
 ```
 
-The suite covers scoring and boundaries, last-attempt wins, invalid and repeated guesses, replay, menu navigation, terminal interruptions, persistence, malformed records, and preservation of existing data when an atomic replacement fails.
-
-Lint and formatting checks use Ruff:
+After the optional installation, the cross-platform command is:
 
 ```bash
-python -m pip install ruff==0.11.13
+python3 -m unittest discover -s tests -v
+```
+
+Tests cover scoring, range boundaries, invalid and repeated guesses, replay, interruptions, statistics, and saving results. Optional style checks:
+
+```bash
+python3 -m pip install ruff==0.11.13
 ruff check .
 ruff format --check .
 ```
-
-From the projects repository root, enter `01-number-guesser-game/` before running the commands above. The project's GitHub Actions workflow lives at `.github/workflows/number-guesser.yml` in the repository root. It runs tests on Python 3.10–3.13 and checks lint and formatting when this project changes.
