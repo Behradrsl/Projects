@@ -1,7 +1,5 @@
 # Number Guesser
 
-**A terminal game built around clear rules, reliable persistence, and a testable Python architecture.**
-
 Guess a randomly selected number, use higher/lower hints to narrow the search, and finish before your attempts run out. Choose a difficulty, track your performance over time, and compare winning rounds on a local leaderboard.
 
 A command-line number guessing game with configurable difficulty and saved results. It demonstrates package organization, domain modeling, defensive input validation, file persistence, automated testing, and continuous integration.
@@ -67,19 +65,19 @@ After a round, replay, change difficulty, view personal statistics, or exit. `Ct
 An illustrative normal round with a secret of 42:
 
 ```text
-Ada, a number between 1 and 100 is waiting.
-Normal · 7 attempts · 15 points per wrong guess
-Type help for commands.
+Ada, guess a number between 1 and 100.
+Normal difficulty. 7 attempts.
+Type help for rules, history for guesses, or quit to exit.
 
-Possible range: 1–100  |  Attempts left: 7  |  Score: 100
-Your guess > 50
+Range: 1–100 | Attempts left: 7
+Your guess: 50
 Go lower!
 
-Possible range: 1–49  |  Attempts left: 6  |  Score: 85
-Your guess > 42
+Range: 1–49 | Attempts left: 6
+Your guess: 42
 
 Correct! The number was 42.
-You won in 2 guesses · Final score: 85/100
+You won in 2 guesses. Final score: 85/100
 ```
 
 ## Command-line options

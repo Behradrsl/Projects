@@ -56,7 +56,7 @@ def show_stats(store: ScoreStore, name: str | None = None) -> bool:
         return False
     if name is not None:
         rounds = [record for record in rounds if record.player == name]
-    print(f"\nSTATISTICS{' · ' + name if name else ''}")
+    print(f"\nStatistics{' for ' + name if name else ''}")
     if not rounds:
         print("No saved rounds yet. Play a round to start your history.")
         return True
@@ -74,7 +74,7 @@ def show_stats(store: ScoreStore, name: str | None = None) -> bool:
         )[:5]
         if not winners:
             continue
-        print(f"\n{difficulty.upper()} · TOP 5 WINNING ROUNDS")
+        print(f"\n{difficulty.title()}: top 5 winning rounds")
         print(f"{'#':<3} {'Player':<24} {'Score':>5} {'Guesses':>8}  Date (UTC)")
         for position, record in enumerate(winners, 1):
             print(
@@ -85,13 +85,10 @@ def show_stats(store: ScoreStore, name: str | None = None) -> bool:
 
 
 def choose_difficulty(store: ScoreStore) -> Difficulty | None:
-    print("\nDifficulty     Range       Attempts   Wrong-guess penalty")
+    print("\nChoose a difficulty:")
     for index, mode in enumerate(DIFFICULTIES.values(), 1):
-        print(
-            f"{index}. {mode.name.title():<9} 1–{mode.upper:<8} "
-            f"{mode.attempts:<10} {mode.penalty} points"
-        )
-    print("\nType stats for your leaderboard, or quit to exit.")
+        print(f"{index}. {mode.name.title()} (1–{mode.upper}, {mode.attempts} attempts)")
+    print("Enter stats to view saved results, or quit to exit.")
     shortcuts = dict(zip(("1", "2", "3"), DIFFICULTIES, strict=False))
     while True:
         choice = input("Difficulty [normal]: ").strip().lower() or "normal"
@@ -109,16 +106,13 @@ def choose_difficulty(store: ScoreStore) -> Difficulty | None:
 def play_round(game: Game, name: str) -> int | None:
     """Return an exit code if the user exits, otherwise allow another round."""
     mode = game.difficulty
-    print(f"\n{name}, a number between 1 and {mode.upper} is waiting.")
-    print(f"{mode.name.title()} · {mode.attempts} attempts · {mode.penalty} points per wrong guess")
-    print("Type help for commands.\n")
+    print(f"\n{name}, guess a number between 1 and {mode.upper}.")
+    print(f"{mode.name.title()} difficulty. {mode.attempts} attempts.")
+    print("Type help for rules, history for guesses, or quit to exit.\n")
     while game.status == Status.PLAYING:
-        print(
-            f"Possible range: {game.lower_bound}–{game.upper_bound}  |  "
-            f"Attempts left: {game.attempts_left}  |  Score: {game.score}"
-        )
+        print(f"Range: {game.lower_bound}–{game.upper_bound} | Attempts left: {game.attempts_left}")
         try:
-            raw = input("Your guess > ").strip().lower()
+            raw = input("Your guess: ").strip().lower()
         except (EOFError, KeyboardInterrupt) as exc:
             game.quit()
             print("\nRound ended. Goodbye!")
@@ -145,7 +139,7 @@ def play_round(game: Game, name: str) -> int | None:
             count = len(game.guesses)
             print(f"\nCorrect! The number was {game.answer}.")
             print(
-                f"You won in {count} {'guess' if count == 1 else 'guesses'} · "
+                f"You won in {count} {'guess' if count == 1 else 'guesses'}. "
                 f"Final score: {game.score}/100"
             )
         elif result.status == Status.LOST:
@@ -160,9 +154,8 @@ def main(argv: list[str] | None = None) -> int:
     store = ScoreStore(args.scores_file.expanduser())
     if args.stats:
         return 0 if show_stats(store, args.name) else 1
-    print("\n" + "=" * 54)
-    print("  NUMBER GUESSER  ·  Think. Guess. Narrow it down.")
-    print("=" * 54)
+    print("\nNumber Guesser")
+    print("Guess the number using higher or lower hints.")
     if args.no_save:
         print("Practice mode: rounds will not be saved.")
     try:
@@ -184,7 +177,9 @@ def main(argv: list[str] | None = None) -> int:
             if exit_code is not None:
                 return exit_code
             while True:
-                choice = input("\nPlay again? [y]es / [m]ode / [s]tats / [n]o: ").strip().lower()
+                choice = (
+                    input("\nPlay again? [Y/n], m = difficulty, s = statistics: ").strip().lower()
+                )
                 if choice in ("y", "yes", ""):
                     break
                 if choice in ("m", "mode"):

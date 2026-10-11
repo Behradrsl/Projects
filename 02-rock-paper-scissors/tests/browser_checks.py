@@ -79,7 +79,7 @@ class BrowserChecks(unittest.TestCase):
         self.pick("rock")
         expect(self.page.locator("#player-score")).to_have_text("1")
         self.pick("rock")
-        expect(self.page.locator("#result-title")).to_have_text("The match is yours.")
+        expect(self.page.locator("#result-title")).to_have_text("You won the match")
         expect(self.page.locator('[data-move="rock"]')).to_be_disabled()
         self.page.get_by_role("button", name="History", exact=True).click()
         expect(self.page.locator("#stat-matches")).to_have_text("1")
@@ -92,7 +92,7 @@ class BrowserChecks(unittest.TestCase):
 
     def test_free_play_draw_keyboard_rules_and_refresh(self):
         self.page.get_by_role("button", name="Free play", exact=True).click()
-        expect(self.page.locator("#match-label")).to_have_text("FREE PLAY")
+        expect(self.page.locator("#match-label")).to_have_text("Free play")
         self.page.get_by_role("button", name="Settings", exact=True).click()
         self.page.locator("#player-name").fill("Ada")
         self.page.locator("#player-name").press("r")
@@ -110,7 +110,7 @@ class BrowserChecks(unittest.TestCase):
         self.page.keyboard.press("Escape")
         expect(self.page.get_by_role("dialog")).not_to_be_visible()
         self.page.get_by_role("button", name="Finish & save session").click()
-        expect(self.page.locator("#result-title")).to_have_text("Evenly matched.")
+        expect(self.page.locator("#result-title")).to_have_text("Session drawn")
         self.page.get_by_role("button", name="History", exact=True).click()
         expect(self.page.get_by_role("cell", name="Free play", exact=True)).to_be_visible()
         expect(self.page.locator("#stat-rate")).to_have_text("—")
@@ -119,10 +119,10 @@ class BrowserChecks(unittest.TestCase):
         self.pick("rock")
         self.page.once("dialog", lambda dialog: dialog.dismiss())
         self.page.get_by_role("button", name="Best of 5", exact=True).click()
-        expect(self.page.locator("#match-label")).to_have_text("BEST OF 3")
+        expect(self.page.locator("#match-label")).to_have_text("Best of 3")
         self.page.once("dialog", lambda dialog: dialog.accept())
         self.page.get_by_role("button", name="Best of 5", exact=True).click()
-        expect(self.page.locator("#match-label")).to_have_text("BEST OF 5")
+        expect(self.page.locator("#match-label")).to_have_text("Best of 5")
         expect(self.page.locator("#player-score")).to_have_text("0")
 
     def test_mobile_layout_play_and_history(self):
@@ -139,7 +139,7 @@ class BrowserChecks(unittest.TestCase):
         expect(self.page.locator("#computer-score")).to_have_text("1")
         self.assert_single_screen(390, 844)
         self.page.get_by_role("button", name="History", exact=True).click()
-        expect(self.page.get_by_text("Every rivalry starts somewhere.")).to_be_visible()
+        expect(self.page.get_by_text("No saved matches")).to_be_visible()
         self.assertLessEqual(self.page.evaluate("document.documentElement.scrollWidth"), 390)
 
     def test_reduced_motion_and_player_name_is_rendered_as_text(self):

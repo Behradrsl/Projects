@@ -72,7 +72,7 @@ A new browser session automatically starts a best-of-three match.
 
 1. Choose **Best of 3**, **Best of 5**, **Best of 7**, or **Free play**.
 2. Click a move, or press `R` for rock, `P` for paper, or `S` for scissors.
-3. Watch the reveal and score update. Use **Play again** after a match ends.
+3. See the round result and score update. Use **Play again** after a match ends.
 
 Rock beats scissors, paper beats rock, and scissors beats paper. Identical moves are a draw.
 
@@ -176,4 +176,4 @@ Optional environment variables for browser checks:
 
 ## Credits
 
-The colored cartoon hand illustrations are custom SVG artwork based on the supplied visual reference. The project also retains the earlier Tabler icon license in [LICENSE-TABLER.txt](LICENSE-TABLER.txt).
+The project retains the earlier Tabler icon license in [LICENSE-TABLER.txt](LICENSE-TABLER.txt).
