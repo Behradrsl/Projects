@@ -1,0 +1,28 @@
+{
+  "elements": [
+    {"id": "REQ-01", "kind": "requirement", "name": "Hold altitude within 0.5 m during inspection"},
+    {"id": "REQ-02", "kind": "requirement", "name": "Provide 20 minutes of usable flight time"},
+    {"id": "REQ-03", "kind": "requirement", "name": "Capture timestamped inspection images"},
+    {"id": "REQ-04", "kind": "requirement", "name": "Notify the operator after loss of telemetry"},
+    {"id": "C-FC", "kind": "component", "name": "Flight controller"},
+    {"id": "C-NAV", "kind": "component", "name": "Navigation sensor"},
+    {"id": "C-BAT", "kind": "component", "name": "Battery"},
+    {"id": "C-CAM", "kind": "component", "name": "Inspection camera"},
+    {"id": "IF-NAV", "kind": "interface", "name": "Altitude measurements"},
+    {"id": "T-01", "kind": "test", "name": "Altitude disturbance simulation", "status": "pass"},
+    {"id": "T-02", "kind": "test", "name": "Endurance bench test", "status": "not_run"},
+    {"id": "T-03", "kind": "test", "name": "Image timestamp inspection", "status": "fail"}
+  ],
+  "links": [
+    {"source": "C-FC", "target": "REQ-01", "kind": "satisfies"},
+    {"source": "C-BAT", "target": "REQ-02", "kind": "satisfies"},
+    {"source": "C-CAM", "target": "REQ-03", "kind": "satisfies"},
+    {"source": "T-01", "target": "REQ-01", "kind": "verifies"},
+    {"source": "T-02", "target": "REQ-02", "kind": "verifies"},
+    {"source": "T-03", "target": "REQ-03", "kind": "verifies"},
+    {"source": "C-FC", "target": "C-NAV", "kind": "depends_on"},
+    {"source": "C-CAM", "target": "C-FC", "kind": "depends_on"},
+    {"source": "IF-NAV", "target": "C-NAV", "kind": "connects"},
+    {"source": "IF-NAV", "target": "C-FC", "kind": "connects"}
+  ]
+}

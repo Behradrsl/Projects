@@ -25,6 +25,9 @@ A collection of Python projects with runnable code and project documentation.
 | [19 · Fake News Detection](19-fake-news-detection/) | Review a claim manually or research it with cited AI web search. |
 | [20 · Resume Auto Review](20-resume-auto-review/) | Run local resume checks or request grounded AI writing suggestions. |
 | [21 · FAQ Telegram Bot](21-faq-telegram-bot/) | Answer configured FAQ questions locally or through Telegram. |
+| [22 · Drone Altitude Control Lab](22-drone-altitude-control/) | Tune a PID controller, simulate gust recovery and compare altitude responses. |
+| [23 · Drone Mission Trade Study](23-drone-mission-trade-study/) | Screen mission feasibility and explore cost versus endurance preferences. |
+| [24 · MBSE Traceability Explorer](24-mbse-traceability-explorer/) | Link architecture, requirements and verification cases; inspect change impact. |
 
 ## Run Number Guesser
 
