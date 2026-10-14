@@ -1,0 +1,1 @@
+A temperature monitoring system has a Sensor and a Controller. A MonitoringSystem owns both components. The Sensor outputs a real-valued temperature through a port. A directed communication link transfers it to the Controller's input port. The Controller performs a reading action that consumes the temperature received at that input.

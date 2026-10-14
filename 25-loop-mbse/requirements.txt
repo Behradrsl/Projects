@@ -1,0 +1,7 @@
+altair==5.5.0
+antlr4-python3-runtime==4.13.2
+openai==3.28.0
+pandas==2.3.3
+python-dotenv==1.2.4
+streamlit==1.65.0
+sysmlpy==0.96.4
