@@ -608,8 +608,8 @@ def upgrade_session_result(result):
 
 def main() -> None:
     connection = load_connection(ROOT)
-    st.set_page_config(page_title="LOOP-MBSE", layout="wide")
-    st.title("LOOP-MBSE")
+    st.set_page_config(page_title="Agentic MBSE Loop", layout="wide")
+    st.title("Agentic MBSE Loop")
     st.write("Generate, validate and refine SysML v2 models through iterative feedback.")
 
     with st.sidebar:

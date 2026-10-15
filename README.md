@@ -28,7 +28,7 @@ A collection of Python projects with runnable code and project documentation.
 | [22 · Drone Altitude Control Lab](22-drone-altitude-control/) | Tune a PID controller, simulate gust recovery and compare altitude responses. |
 | [23 · Drone Mission Trade Study](23-drone-mission-trade-study/) | Screen mission feasibility and explore cost versus endurance preferences. |
 | [24 · MBSE Traceability Explorer](24-mbse-traceability-explorer/) | Link architecture, requirements and verification cases; inspect change impact. |
-| [25 · LOOP-MBSE](25-loop-mbse/) | Generate, validate and refine SysML v2 models through iterative feedback. |
+| [25 · Agentic MBSE Loop](25-agentic-mbse-loop/) | Generate, validate and refine SysML v2 models through iterative feedback. |
 
 ## Run Number Guesser
 

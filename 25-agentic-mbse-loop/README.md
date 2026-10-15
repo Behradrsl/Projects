@@ -1,8 +1,8 @@
-# LOOP-MBSE
+# Agentic MBSE Loop
 
-**Iterative generation and validation of textual SysML v2 models.**
+**An agentic feedback loop for generating and validating textual SysML v2 models.**
 
-LOOP-MBSE explores whether structured validator feedback can help a language model revise a cyber-physical system model. Starting from a system description, it generates a SysML v2 candidate, checks it with a parser and static analyzer, and returns the diagnostics to the same language model for the next revision. The original description stays fixed so each version can be compared against the same intent.
+Agentic MBSE Loop is a model-based systems engineering (MBSE) prototype that explores whether structured validator feedback can help a language model revise a cyber-physical system model. Starting from a system description, it generates a SysML v2 candidate, checks it with a parser and static analyzer, and returns the diagnostics to the same language model for the next revision. The original description stays fixed so each version can be compared against the same intent.
 
 The application preserves every candidate and its validation results. Its dashboard shows how syntax, static semantics, identifier presence and diagnostics change across iterations, with separate human assessments for architecture and requirements.
 
@@ -41,7 +41,7 @@ The figure is derived directly from the saved measurements. Missing checks appea
 Requires **Python 3.11 or newer**.
 
 ```bash
-cd 25-loop-mbse
+cd 25-agentic-mbse-loop
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt

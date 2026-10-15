@@ -1,14 +1,14 @@
-name: LOOP-MBSE checks
+name: Agentic MBSE Loop checks
 
 on:
   push:
     paths:
-      - "25-loop-mbse/**"
-      - ".github/workflows/loop-mbse.yml"
+      - "25-agentic-mbse-loop/**"
+      - ".github/workflows/agentic-mbse-loop.yml"
   pull_request:
     paths:
-      - "25-loop-mbse/**"
-      - ".github/workflows/loop-mbse.yml"
+      - "25-agentic-mbse-loop/**"
+      - ".github/workflows/agentic-mbse-loop.yml"
   workflow_dispatch:
 
 permissions:
@@ -16,7 +16,7 @@ permissions:
 
 defaults:
   run:
-    working-directory: 25-loop-mbse
+    working-directory: 25-agentic-mbse-loop
 
 jobs:
   checks:
